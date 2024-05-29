@@ -8505,7 +8505,7 @@ html_content = page.content</p>
 <ol>
 <li><p>The answers from the customize_tokenizer() function do not match with the above given test case because of the below  mentioned reason.</p>
 </li>
-<li><p>The nlp pipeline with the custom tokenizer obtained from the customize_tokenizer() function is more accurate and apt since it is currently identifying the date type text entity(06/01/2023) tokens as 'DATE' whereas in the given test case it incorrectly identified the date type text entity tokens as 'CARDINAL'.</p>
+<li><p>The nlp pipeline with the custom tokenizer obtained from the customize_tokenizer() function is more accurate and apt since it is correctly identifying the date type text entity(06/01/2023) tokens as 'DATE' whereas in the given test case it incorrectly identified the date type text entity tokens as 'CARDINAL'.</p>
 </li>
 <li><p>DATE entity represents text or numericals related to dates,months and years whereas CARDINAL entity represents numerals(eg- 'one', 'two') that do not come under any other type.</p>
 </li>
