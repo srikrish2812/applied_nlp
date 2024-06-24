@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Pretrained_LM_Subtask_B</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Pretrained_LM_Subtask_C</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7516,18 +7516,18 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Pre-trained-Language-Models:-SubTask-B">Pre-trained Language Models: SubTask B<a class="anchor-link" href="#Pre-trained-Language-Models:-SubTask-B">¶</a></h1><h2 id="%5B6-Marks%5D">[6 Marks]<a class="anchor-link" href="#%5B6-Marks%5D">¶</a></h2><p>In this assignment, you will work on the <a href="https://competitions.codalab.org/competitions/21080">ComVE</a> shared task that was part of SemEval-2020. The task aims to evaluate whether a system can distinguish if a natural language statement makes sense to humans or not and provide a reason. <strong>ConVE</strong> includes three subtasks that require models to acquire and apply commonsense knowledge. In this notebook you will focus on <strong>SubTask B</strong>:</p>
+<h1 id="Pre-trained-Language-Models:-SubTask-C">Pre-trained Language Models: SubTask C<a class="anchor-link" href="#Pre-trained-Language-Models:-SubTask-C">¶</a></h1><h2 id="%5B8-Marks%5D">[8 Marks]<a class="anchor-link" href="#%5B8-Marks%5D">¶</a></h2><p>In this assignment, you will work on the <a href="https://competitions.codalab.org/competitions/21080">ComVE</a> shared task that was part of SemEval-2020. The task aims to evaluate whether a system can distinguish if a natural language statement makes sense to humans or not and provide a reason. <strong>ConVE</strong> includes three subtasks that require models to acquire and apply commonsense knowledge. In this notebook you will focus on <strong>SubTask C</strong>:</p>
 <ul>
-<li><p>Given a statement that does not make sense and three possible reasons, select which reason explains why the given statement is against common sense. For example, for the following nonsensical statement the correct answer is <em>Reason A</em>:</p>
+<li><p>Given a statement that does not make sense, generate the reason why this statement does not make sense. For each nonsensical statement, three valid reasons are given as reference:</p>
 <p><em>Statement</em>: He put an elephant into the fridge.<br/>
 <em>Reason A</em>: An elephant is much bigger than a fridge.<br/>
-<em>Reason B</em>: Elephants are usually white while fridges are usually white.<br/>
-<em>Reason C</em>: An elephant cannot eat a fridge.</p>
-<p>This subtask can be approached as a Multiple Choice problem where the input is the nonsensical statement and the three possible explanations, and the output is a label indicating which of the reasons is the correct one.</p>
+<em>Reason B</em>: A fridge is much smaller than an elephant.<br/>
+<em>Reason C</em>: Most of the fridges aren't large enough to contain an elephant.</p>
+<p>This subtask can be approached as a Sequence-to-Sequence problem where the input is the nonsensical statement and the output is a valid reason.</p>
 </li>
 </ul>
-<p>You will fine-tune a Pre-trained Language Model with <a href="https://huggingface.co/docs/transformers/index">Transformers</a> library that provides a set of tools for fine-tunning and deploying a wide variety of Pre-trained Language Models. The <a href="https://huggingface.co/models">Hugging Face Hub</a> allows you to explore all the models supported by <strong>Transformers</strong> and even share your own models with the community. In this assignment, you will work with <a href="https://huggingface.co/docs/transformers/model_doc/roberta">RoBERTa</a>, a model that uses <strong>BERT</strong>'s architecture but has been pre-trained with more data and a more carefully selected set of hyperparameters.</p>
-<p>Fine-tuning a Pre-trained Language Model usually requires a great amount of time and computational resources. Your personal computer will not be probably enough. In order to complete the assignment, you can work with a reduced version of the dataset and the base version of <strong>RoBERTa</strong>:</p>
+<p>You will fine-tune a Pre-trained Language Model with <a href="https://huggingface.co/docs/transformers/index">Transformers</a> library that provides a set of tools for fine-tunning and deploying a wide variety of Pre-trained Language Models. The <a href="https://huggingface.co/models">Hugging Face Hub</a> allows you to explore all the models supported by <strong>Transformers</strong> and even share your own models with the community. In this assignment, you will work with <a href="https://huggingface.co/docs/transformers/model_doc/bart">BART</a>, a pre-trained Sequence-to-Sequence model.</p>
+<p>Fine-tuning a Pre-trained Language Model usually requires a great amount of time and computational resources. Your personal computer will not be enough. In order to complete the assignment, you can work with a reduced version of the dataset and the base version of <strong>BART</strong>:</p>
 </div>
 </div>
 </div>
@@ -7536,7 +7536,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [137]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">shrink_dataset</span> <span class="o">=</span> <span class="kc">True</span>
@@ -7556,9 +7556,6 @@ a.anchor-link {
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p>Although the value of these variables do not affect the tests that will evaluate your code, the output examples distributed throughout this notebook are based on a <code>shrink_dataset</code> and a <code>base_model</code> variables set as <code>True</code>, and a <code>colab</code> variable set as <code>False</code>.</p>
 <p>If you want to perform a full training of the model to obtain its real performance, you can use a cloud service like <a href="https://colab.research.google.com/">Google Colab</a>. <strong>Colab</strong> is a <strong>Jupyter</strong> notebook environment that supports both GPU and TPU instances, allowing training large scale Deep Learning models. Set the <code>shrink_dataset</code> and a <code>base_model</code> variables to <code>False</code>, the <code>colab</code> variable to <code>True</code>, and follow the instructions provided to you to run the notebook in <strong>Colab</strong>.</p>
-<blockquote>
-<p><strong>Note!</strong> To run this notebook in <strong>Colab</strong> you will need to upload the <code>datacollator.py</code> file included in the repository of the assignment.</p>
-</blockquote>
 </div>
 </div>
 </div>
@@ -7567,13 +7564,13 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [138]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">colab</span><span class="p">:</span>
     <span class="o">!</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>transformers<span class="w"> </span>datasets<span class="w"> </span>evaluate
     <span class="kn">import</span> <span class="nn">os</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">"SemEval2020-Task4-Data/ALL data/Training  Data/subtaskA_data_all.csv"</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">"SemEval2020-Task4-Data/ALL data/Training  Data/subtaskC_data_all.csv"</span><span class="p">):</span>
         <span class="o">!</span><span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/wangcunxiang/SemEval2020-Task4-Commonsense-Validation-and-Explanation.git<span class="w"> </span>SemEval2020-Task4-Data
 </pre></div>
 </div>
@@ -7596,16 +7593,15 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [139]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">evaluate</span>
 <span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">Dataset</span>
-<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForMultipleChoice</span><span class="p">,</span> 
-                          <span class="n">TrainingArguments</span><span class="p">,</span> <span class="n">Trainer</span><span class="p">,</span> 
-                          <span class="n">enable_full_determinism</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">datacollator</span> <span class="kn">import</span> <span class="n">DataCollatorForMultipleChoice</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForSeq2SeqLM</span><span class="p">,</span> 
+                          <span class="n">Seq2SeqTrainingArguments</span><span class="p">,</span> <span class="n">Seq2SeqTrainer</span><span class="p">,</span> 
+                          <span class="n">DataCollatorForSeq2Seq</span><span class="p">,</span> <span class="n">enable_full_determinism</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -7627,7 +7623,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [140]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">enable_full_determinism</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
@@ -7655,14 +7651,14 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [141]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Number of epochs to train the model</span>
 <span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">8</span>  <span class="c1"># Number of examples used per gradient update</span>
 <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">1e-5</span>  <span class="c1"># The learning rate for the optimizer</span>
-<span class="n">max_length</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># Maximum lenght of the input sequence</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="s2">"modelB"</span>  <span class="c1"># The output directory where the model will be written to</span>
+<span class="n">max_length</span> <span class="o">=</span> <span class="mi">25</span>  <span class="c1"># Maximum lenght of the input sequence</span>
+<span class="n">output_dir</span> <span class="o">=</span> <span class="s2">"modelC"</span>  <span class="c1"># The output directory where the model will be written</span>
 </pre></div>
 </div>
 </div>
@@ -7675,8 +7671,20 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Loading-the-Pre-trained-Model---%5B1-Mark%5D">Loading the Pre-trained Model - [1 Mark]<a class="anchor-link" href="#Loading-the-Pre-trained-Model---%5B1-Mark%5D">¶</a></h2><p>The first step you must perform in this assignment is to load the model and its corresponding tokenizer. <strong>Transformers</strong> provides support for a wide variety of pre-trained models via specific classes. However, the library also allows automatically retrieving a model given jut the name or path using <a href="https://huggingface.co/docs/transformers/v4.27.2/en/model_doc/auto">AutoClasses</a>. To fine-tune a pre-trained model for a downstream task, it is necessary to replace the original top layer of the model with a new specific output layer. <strong>AutoClasses</strong> also allows you to do this automatically for various types of Natural Language Processing tasks. For instance, <code>AutoModelForMultipleChoice</code> instantiates the model with a top layer for Multiple Choice.</p>
-<p>You must complete the code for the <code>load_model</code> function. This functions takes the name of the pre-trained model and should load and return both the model, initialized for Text Classification, and its corresponding tokenizer. You can get some tips from <a href="https://huggingface.co/docs/transformers/autoclass_tutorial">Transformers documentation</a>.</p>
+<blockquote>
+<p><strong>Note!</strong> The notebook for this assignment provides very little guidance. You are expected to refer to the <a href="https://huggingface.co/docs">documentation</a> for details on how to solve the exercises.</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Loading-the-Pre-trained-Model---%5B1-Mark%5D">Loading the Pre-trained Model - [1 Mark]<a class="anchor-link" href="#Loading-the-Pre-trained-Model---%5B1-Mark%5D">¶</a></h2><p>The first step you must perform in this assignment is to load the model and its corresponding tokenizer using the classes imported above.</p>
 </div>
 </div>
 </div>
@@ -7685,14 +7693,15 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [142]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>   <span class="c1"># [1 Mark]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>   <span class="c1">#[1 Mark]</span>
     <span class="c1">#</span>
     <span class="c1">#  REPLACE THE pass STATEMENT WITH YOUR CODE</span>
     <span class="c1">#</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForMultipleChoice</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForSeq2SeqLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
     <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span>
     <span class="c1">#pass</span>
@@ -7706,10 +7715,10 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [143]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">model_name</span> <span class="o">=</span> <span class="s2">"roberta-base"</span> <span class="k">if</span> <span class="n">base_model</span> <span class="k">else</span> <span class="s2">"roberta-large"</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">model_name</span> <span class="o">=</span> <span class="s2">"facebook/bart-base"</span> <span class="k">if</span> <span class="n">base_model</span> <span class="k">else</span> <span class="s2">"facebook/bart-large"</span>
 <span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -7725,98 +7734,245 @@ a.anchor-link {
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
 <pre>/Users/abhay/Desktop/college/uoa/applied_nlp/assignments/assignment_4/env/lib/python3.9/site-packages/huggingface_hub/file_download.py:1132: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
   warnings.warn(
-loading configuration file config.json from cache at /Users/abhay/.cache/huggingface/hub/models--roberta-base/snapshots/e2da8e2f811d1448a5b465c236feacd80ffbac7b/config.json
-Model config RobertaConfig {
-  "_name_or_path": "roberta-base",
+loading configuration file config.json from cache at /Users/abhay/.cache/huggingface/hub/models--facebook--bart-base/snapshots/aadd2ab0ae0c8268c7c9693540e9904811f36177/config.json
+Model config BartConfig {
+  "_name_or_path": "facebook/bart-base",
+  "activation_dropout": 0.1,
+  "activation_function": "gelu",
+  "add_bias_logits": false,
+  "add_final_layer_norm": false,
   "architectures": [
-    "RobertaForMaskedLM"
+    "BartModel"
   ],
-  "attention_probs_dropout_prob": 0.1,
+  "attention_dropout": 0.1,
   "bos_token_id": 0,
-  "classifier_dropout": null,
+  "classif_dropout": 0.1,
+  "classifier_dropout": 0.0,
+  "d_model": 768,
+  "decoder_attention_heads": 12,
+  "decoder_ffn_dim": 3072,
+  "decoder_layerdrop": 0.0,
+  "decoder_layers": 6,
+  "decoder_start_token_id": 2,
+  "dropout": 0.1,
+  "early_stopping": true,
+  "encoder_attention_heads": 12,
+  "encoder_ffn_dim": 3072,
+  "encoder_layerdrop": 0.0,
+  "encoder_layers": 6,
   "eos_token_id": 2,
-  "hidden_act": "gelu",
-  "hidden_dropout_prob": 0.1,
-  "hidden_size": 768,
-  "initializer_range": 0.02,
-  "intermediate_size": 3072,
-  "layer_norm_eps": 1e-05,
-  "max_position_embeddings": 514,
-  "model_type": "roberta",
-  "num_attention_heads": 12,
-  "num_hidden_layers": 12,
+  "forced_bos_token_id": 0,
+  "forced_eos_token_id": 2,
+  "gradient_checkpointing": false,
+  "id2label": {
+    "0": "LABEL_0",
+    "1": "LABEL_1",
+    "2": "LABEL_2"
+  },
+  "init_std": 0.02,
+  "is_encoder_decoder": true,
+  "label2id": {
+    "LABEL_0": 0,
+    "LABEL_1": 1,
+    "LABEL_2": 2
+  },
+  "max_position_embeddings": 1024,
+  "model_type": "bart",
+  "no_repeat_ngram_size": 3,
+  "normalize_before": false,
+  "normalize_embedding": true,
+  "num_beams": 4,
+  "num_hidden_layers": 6,
   "pad_token_id": 1,
-  "position_embedding_type": "absolute",
+  "scale_embedding": false,
+  "task_specific_params": {
+    "summarization": {
+      "length_penalty": 1.0,
+      "max_length": 128,
+      "min_length": 12,
+      "num_beams": 4
+    },
+    "summarization_cnn": {
+      "length_penalty": 2.0,
+      "max_length": 142,
+      "min_length": 56,
+      "num_beams": 4
+    },
+    "summarization_xsum": {
+      "length_penalty": 1.0,
+      "max_length": 62,
+      "min_length": 11,
+      "num_beams": 6
+    }
+  },
+  "torch_dtype": "float32",
   "transformers_version": "4.23.1",
-  "type_vocab_size": 1,
   "use_cache": true,
   "vocab_size": 50265
 }
 
-loading weights file pytorch_model.bin from cache at /Users/abhay/.cache/huggingface/hub/models--roberta-base/snapshots/e2da8e2f811d1448a5b465c236feacd80ffbac7b/pytorch_model.bin
-Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForMultipleChoice: ['lm_head.bias', 'lm_head.layer_norm.weight', 'lm_head.decoder.weight', 'lm_head.dense.weight', 'lm_head.dense.bias', 'lm_head.layer_norm.bias']
-- This IS expected if you are initializing RobertaForMultipleChoice from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
-- This IS NOT expected if you are initializing RobertaForMultipleChoice from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
-Some weights of RobertaForMultipleChoice were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.bias', 'classifier.weight']
-You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
-loading configuration file config.json from cache at /Users/abhay/.cache/huggingface/hub/models--roberta-base/snapshots/e2da8e2f811d1448a5b465c236feacd80ffbac7b/config.json
-Model config RobertaConfig {
-  "_name_or_path": "roberta-base",
+loading weights file pytorch_model.bin from cache at /Users/abhay/.cache/huggingface/hub/models--facebook--bart-base/snapshots/aadd2ab0ae0c8268c7c9693540e9904811f36177/pytorch_model.bin
+All model checkpoint weights were used when initializing BartForConditionalGeneration.
+
+All the weights of BartForConditionalGeneration were initialized from the model checkpoint at facebook/bart-base.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use BartForConditionalGeneration for predictions without further training.
+Could not locate the tokenizer configuration file, will try to use the model config instead.
+loading configuration file config.json from cache at /Users/abhay/.cache/huggingface/hub/models--facebook--bart-base/snapshots/aadd2ab0ae0c8268c7c9693540e9904811f36177/config.json
+Model config BartConfig {
+  "_name_or_path": "facebook/bart-base",
+  "activation_dropout": 0.1,
+  "activation_function": "gelu",
+  "add_bias_logits": false,
+  "add_final_layer_norm": false,
   "architectures": [
-    "RobertaForMaskedLM"
+    "BartModel"
   ],
-  "attention_probs_dropout_prob": 0.1,
+  "attention_dropout": 0.1,
   "bos_token_id": 0,
-  "classifier_dropout": null,
+  "classif_dropout": 0.1,
+  "classifier_dropout": 0.0,
+  "d_model": 768,
+  "decoder_attention_heads": 12,
+  "decoder_ffn_dim": 3072,
+  "decoder_layerdrop": 0.0,
+  "decoder_layers": 6,
+  "decoder_start_token_id": 2,
+  "dropout": 0.1,
+  "early_stopping": true,
+  "encoder_attention_heads": 12,
+  "encoder_ffn_dim": 3072,
+  "encoder_layerdrop": 0.0,
+  "encoder_layers": 6,
   "eos_token_id": 2,
-  "hidden_act": "gelu",
-  "hidden_dropout_prob": 0.1,
-  "hidden_size": 768,
-  "initializer_range": 0.02,
-  "intermediate_size": 3072,
-  "layer_norm_eps": 1e-05,
-  "max_position_embeddings": 514,
-  "model_type": "roberta",
-  "num_attention_heads": 12,
-  "num_hidden_layers": 12,
+  "forced_bos_token_id": 0,
+  "forced_eos_token_id": 2,
+  "gradient_checkpointing": false,
+  "id2label": {
+    "0": "LABEL_0",
+    "1": "LABEL_1",
+    "2": "LABEL_2"
+  },
+  "init_std": 0.02,
+  "is_encoder_decoder": true,
+  "label2id": {
+    "LABEL_0": 0,
+    "LABEL_1": 1,
+    "LABEL_2": 2
+  },
+  "max_position_embeddings": 1024,
+  "model_type": "bart",
+  "no_repeat_ngram_size": 3,
+  "normalize_before": false,
+  "normalize_embedding": true,
+  "num_beams": 4,
+  "num_hidden_layers": 6,
   "pad_token_id": 1,
-  "position_embedding_type": "absolute",
+  "scale_embedding": false,
+  "task_specific_params": {
+    "summarization": {
+      "length_penalty": 1.0,
+      "max_length": 128,
+      "min_length": 12,
+      "num_beams": 4
+    },
+    "summarization_cnn": {
+      "length_penalty": 2.0,
+      "max_length": 142,
+      "min_length": 56,
+      "num_beams": 4
+    },
+    "summarization_xsum": {
+      "length_penalty": 1.0,
+      "max_length": 62,
+      "min_length": 11,
+      "num_beams": 6
+    }
+  },
+  "torch_dtype": "float32",
   "transformers_version": "4.23.1",
-  "type_vocab_size": 1,
   "use_cache": true,
   "vocab_size": 50265
 }
 
-loading file vocab.json from cache at /Users/abhay/.cache/huggingface/hub/models--roberta-base/snapshots/e2da8e2f811d1448a5b465c236feacd80ffbac7b/vocab.json
-loading file merges.txt from cache at /Users/abhay/.cache/huggingface/hub/models--roberta-base/snapshots/e2da8e2f811d1448a5b465c236feacd80ffbac7b/merges.txt
-loading file tokenizer.json from cache at /Users/abhay/.cache/huggingface/hub/models--roberta-base/snapshots/e2da8e2f811d1448a5b465c236feacd80ffbac7b/tokenizer.json
+loading file vocab.json from cache at /Users/abhay/.cache/huggingface/hub/models--facebook--bart-base/snapshots/aadd2ab0ae0c8268c7c9693540e9904811f36177/vocab.json
+loading file merges.txt from cache at /Users/abhay/.cache/huggingface/hub/models--facebook--bart-base/snapshots/aadd2ab0ae0c8268c7c9693540e9904811f36177/merges.txt
+loading file tokenizer.json from cache at /Users/abhay/.cache/huggingface/hub/models--facebook--bart-base/snapshots/aadd2ab0ae0c8268c7c9693540e9904811f36177/tokenizer.json
 loading file added_tokens.json from cache at None
 loading file special_tokens_map.json from cache at None
-loading file tokenizer_config.json from cache at /Users/abhay/.cache/huggingface/hub/models--roberta-base/snapshots/e2da8e2f811d1448a5b465c236feacd80ffbac7b/tokenizer_config.json
-loading configuration file config.json from cache at /Users/abhay/.cache/huggingface/hub/models--roberta-base/snapshots/e2da8e2f811d1448a5b465c236feacd80ffbac7b/config.json
-Model config RobertaConfig {
-  "_name_or_path": "roberta-base",
+loading file tokenizer_config.json from cache at None
+loading configuration file config.json from cache at /Users/abhay/.cache/huggingface/hub/models--facebook--bart-base/snapshots/aadd2ab0ae0c8268c7c9693540e9904811f36177/config.json
+Model config BartConfig {
+  "_name_or_path": "facebook/bart-base",
+  "activation_dropout": 0.1,
+  "activation_function": "gelu",
+  "add_bias_logits": false,
+  "add_final_layer_norm": false,
   "architectures": [
-    "RobertaForMaskedLM"
+    "BartModel"
   ],
-  "attention_probs_dropout_prob": 0.1,
+  "attention_dropout": 0.1,
   "bos_token_id": 0,
-  "classifier_dropout": null,
+  "classif_dropout": 0.1,
+  "classifier_dropout": 0.0,
+  "d_model": 768,
+  "decoder_attention_heads": 12,
+  "decoder_ffn_dim": 3072,
+  "decoder_layerdrop": 0.0,
+  "decoder_layers": 6,
+  "decoder_start_token_id": 2,
+  "dropout": 0.1,
+  "early_stopping": true,
+  "encoder_attention_heads": 12,
+  "encoder_ffn_dim": 3072,
+  "encoder_layerdrop": 0.0,
+  "encoder_layers": 6,
   "eos_token_id": 2,
-  "hidden_act": "gelu",
-  "hidden_dropout_prob": 0.1,
-  "hidden_size": 768,
-  "initializer_range": 0.02,
-  "intermediate_size": 3072,
-  "layer_norm_eps": 1e-05,
-  "max_position_embeddings": 514,
-  "model_type": "roberta",
-  "num_attention_heads": 12,
-  "num_hidden_layers": 12,
+  "forced_bos_token_id": 0,
+  "forced_eos_token_id": 2,
+  "gradient_checkpointing": false,
+  "id2label": {
+    "0": "LABEL_0",
+    "1": "LABEL_1",
+    "2": "LABEL_2"
+  },
+  "init_std": 0.02,
+  "is_encoder_decoder": true,
+  "label2id": {
+    "LABEL_0": 0,
+    "LABEL_1": 1,
+    "LABEL_2": 2
+  },
+  "max_position_embeddings": 1024,
+  "model_type": "bart",
+  "no_repeat_ngram_size": 3,
+  "normalize_before": false,
+  "normalize_embedding": true,
+  "num_beams": 4,
+  "num_hidden_layers": 6,
   "pad_token_id": 1,
-  "position_embedding_type": "absolute",
+  "scale_embedding": false,
+  "task_specific_params": {
+    "summarization": {
+      "length_penalty": 1.0,
+      "max_length": 128,
+      "min_length": 12,
+      "num_beams": 4
+    },
+    "summarization_cnn": {
+      "length_penalty": 2.0,
+      "max_length": 142,
+      "min_length": 56,
+      "num_beams": 4
+    },
+    "summarization_xsum": {
+      "length_penalty": 1.0,
+      "max_length": 62,
+      "min_length": 11,
+      "num_beams": 6
+    }
+  },
+  "torch_dtype": "float32",
   "transformers_version": "4.23.1",
-  "type_vocab_size": 1,
   "use_cache": true,
   "vocab_size": 50265
 }
@@ -7833,7 +7989,119 @@ Model config RobertaConfig {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Data-Pre-processing---%5B1-Mark%5D">Data Pre-processing - [1 Mark]<a class="anchor-link" href="#Data-Pre-processing---%5B1-Mark%5D">¶</a></h2><p>The <strong>ComVE</strong> dataset consists of 9997 nonsensical statements with their corresponding 3 possible reasons for the train set, 997 statements for development and 1000 for test. Each nonsensical statements is annotated with a <code>A</code>, <code>B</code> or <code>C</code> label depending on which is the correct reason. The dataset can be loaded into three <code>DataFrames</code> as follows:</p>
+<h2 id="Data-Pre-processing---%5B2-Marks%5D">Data Pre-processing - [2 Marks]<a class="anchor-link" href="#Data-Pre-processing---%5B2-Marks%5D">¶</a></h2><p>The <strong>ComVE</strong> dataset consists of 10000 nonsensical statements for the train set, 997 statements for development and 1000 for test. Each nonsensical statements comes with with three reference valid reasons. You must load the three sets into three <code>DataFrames</code>. For the training and development splits, the <code>DataFrame</code> should contain three columns: the <code>id</code> of the nonsensical statement, a <code>FalseSent</code> column with the nonsensical statement and a <code>reason</code> column with the reference reasons. For the test set, the <code>DataFrame</code> should contain five columns: the <code>id</code> of the nonsensical statement, a <code>FalseSent</code> column with the nonsensical statement and three columns (<code>reason1</code>, <code>reason2</code> and <code>reason3</code>) containing each of the reference reasons.</p>
+<p>Train DataFrame:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right"></th>
+<th style="text-align:right">id</th>
+<th style="text-align:left">FalseSent</th>
+<th style="text-align:left">reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">769</td>
+<td style="text-align:right">769</td>
+<td style="text-align:left">Computers is an ingredient used in preparing food</td>
+<td style="text-align:left">Computers are not used for food and they are not edible</td>
+</tr>
+<tr>
+<td style="text-align:right">10769</td>
+<td style="text-align:right">769</td>
+<td style="text-align:left">Computers is an ingredient used in preparing food</td>
+<td style="text-align:left">Computer is not something that can be used in preparing food.</td>
+</tr>
+<tr>
+<td style="text-align:right">20769</td>
+<td style="text-align:right">769</td>
+<td style="text-align:left">Computers is an ingredient used in preparing food</td>
+<td style="text-align:left">You cannot eat a computer</td>
+</tr>
+<tr>
+<td style="text-align:right">888</td>
+<td style="text-align:right">888</td>
+<td style="text-align:left">he did hear music in his cooling glass</td>
+<td style="text-align:left">cooling glass can not play the song, it's not a electronic thing to play music</td>
+</tr>
+<tr>
+<td style="text-align:right">10888</td>
+<td style="text-align:right">888</td>
+<td style="text-align:left">he did hear music in his cooling glass</td>
+<td style="text-align:left">Glass does not produce music.</td>
+</tr>
+<tr>
+<td style="text-align:right">20888</td>
+<td style="text-align:right">888</td>
+<td style="text-align:left">he did hear music in his cooling glass</td>
+<td style="text-align:left">Any sound that might be made by a cooling glass is not music.</td>
+</tr>
+</tbody>
+</table>
+<p>Test DataFrame:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right"></th>
+<th style="text-align:right">id</th>
+<th style="text-align:left">FalseSent</th>
+<th style="text-align:left">reason1</th>
+<th style="text-align:left">reason2</th>
+<th style="text-align:left">reason3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">76</td>
+<td style="text-align:right">1280</td>
+<td style="text-align:left">Beer that is drunk by humans is white</td>
+<td style="text-align:left">Beer is made of barley and it is a yellow drink</td>
+<td style="text-align:left">A beer that is drunk by humans is not white.</td>
+<td style="text-align:left">Beer is brown</td>
+</tr>
+<tr>
+<td style="text-align:right">101</td>
+<td style="text-align:right">860</td>
+<td style="text-align:left">eating trash food every day makes you stronger</td>
+<td style="text-align:left">eating trash food every day makes your body fat and weak</td>
+<td style="text-align:left">eating trash food every day is bad for your health</td>
+<td style="text-align:left">Trash food could be contaminated</td>
+</tr>
+<tr>
+<td style="text-align:right">136</td>
+<td style="text-align:right">777</td>
+<td style="text-align:left">he put some cooking oil in his wine</td>
+<td style="text-align:left">cooking oil will destroy the taste of the wine</td>
+<td style="text-align:left">Cooking oil does not go in wine</td>
+<td style="text-align:left">Cooking oil does not taste nice and therefore would ruin the wine.</td>
+</tr>
+<tr>
+<td style="text-align:right">174</td>
+<td style="text-align:right">570</td>
+<td style="text-align:left">Lobsters live in the mountains</td>
+<td style="text-align:left">Lobsters needs water to live</td>
+<td style="text-align:left">Lobsters live in the sea.</td>
+<td style="text-align:left">Lobsters live in the sea, not the mountains</td>
+</tr>
+<tr>
+<td style="text-align:right">210</td>
+<td style="text-align:right">1929</td>
+<td style="text-align:left">the clock shows animals</td>
+<td style="text-align:left">the clock is used to show the time to people</td>
+<td style="text-align:left">Clocks are required to tell the time, not show animals</td>
+<td style="text-align:left">a clock shows the time not animals</td>
+</tr>
+<tr>
+<td style="text-align:right">235</td>
+<td style="text-align:right">1619</td>
+<td style="text-align:left">she put the giraffe in the freezer</td>
+<td style="text-align:left">A giraffe is much bigger than the freezer</td>
+<td style="text-align:left">There is no way a giraffe is fitting in the freezer.</td>
+<td style="text-align:left">A giraffe is too big to be put in a freezer.</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -7842,14 +8110,26 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [144]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">data_csv</span><span class="p">,</span> <span class="n">answers_csv</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_csv</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
-    <span class="n">answers</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">answers_csv</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s2">"id"</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s2">"label"</span><span class="p">})</span>
-    <span class="n">answers</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span> <span class="o">=</span> <span class="n">answers</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">labels</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">answers</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">"id"</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">data_csv</span><span class="p">,</span> <span class="n">answers_csv</span><span class="p">,</span> <span class="n">is_test</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>   <span class="c1"># 1 Mark</span>
+    <span class="c1">#</span>
+    <span class="c1">#  REPLACE THE pass STATEMENT WITH YOUR CODE</span>
+    <span class="c1">#</span>
+    <span class="c1"># Loading the csv files</span>
+    <span class="n">answers_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">answers_csv</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span><span class="s1">'id'</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="s1">'reason1'</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="s1">'reason2'</span><span class="p">,</span><span class="mi">3</span><span class="p">:</span><span class="s1">'reason3'</span><span class="p">})</span>
+    <span class="n">data_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_csv</span><span class="p">)</span>
+    <span class="c1"># Preparing train and development datasets</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_test</span><span class="p">:</span>
+        <span class="n">expanded_answers_df</span> <span class="o">=</span> <span class="n">answers_df</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">'id'</span><span class="p">],</span> <span class="n">value_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">'reason1'</span><span class="p">,</span> <span class="s1">'reason2'</span><span class="p">,</span> <span class="s1">'reason3'</span><span class="p">],</span> <span class="n">value_name</span><span class="o">=</span><span class="s1">'reason'</span><span class="p">)</span>
+        <span class="n">data_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">data_df</span><span class="p">,</span> <span class="n">expanded_answers_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'id'</span><span class="p">)</span>
+        <span class="n">data_df</span> <span class="o">=</span> <span class="n">data_df</span><span class="p">[[</span><span class="s1">'id'</span><span class="p">,</span><span class="s1">'FalseSent'</span><span class="p">,</span><span class="s1">'reason'</span><span class="p">]]</span>
+    <span class="c1"># preparing test dataset</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">data_df</span><span class="p">,</span><span class="n">answers_df</span><span class="p">,</span><span class="n">on</span><span class="o">=</span><span class="s1">'id'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data_df</span>
+    <span class="c1">#pass</span>
 </pre></div>
 </div>
 </div>
@@ -7860,24 +8140,30 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [145]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"A"</span><span class="p">,</span> <span class="s2">"B"</span><span class="p">,</span> <span class="s2">"C"</span><span class="p">]</span>
-<span class="n">train_data_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Training  Data/subtaskB_data_all.csv"</span>
-<span class="n">train_answers_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Training  Data/subtaskB_answers_all.csv"</span>
-<span class="n">train_data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">train_data_csv</span><span class="p">,</span> <span class="n">train_answers_csv</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-<span class="n">dev_data_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Dev Data/subtaskB_dev_data.csv"</span>
-<span class="n">dev_answers_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Dev Data/subtaskB_gold_answers.csv"</span>
-<span class="n">dev_data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">dev_data_csv</span><span class="p">,</span> <span class="n">dev_answers_csv</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
-<span class="n">test_data_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Test Data/subtaskB_test_data.csv"</span>
-<span class="n">test_answers_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Test Data/subtaskB_gold_answers.csv"</span>
-<span class="n">test_data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">test_data_csv</span><span class="p">,</span> <span class="n">test_answers_csv</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">train_data_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Training  Data/subtaskC_data_all.csv"</span>
+<span class="n">train_answers_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Training  Data/subtaskC_answers_all.csv"</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">train_data_csv</span><span class="p">,</span> <span class="n">train_answers_csv</span><span class="p">)</span>
+<span class="n">dev_data_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Dev Data/subtaskC_dev_data.csv"</span>
+<span class="n">dev_answers_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Dev Data/subtaskC_gold_answers.csv"</span>
+<span class="n">dev_data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">dev_data_csv</span><span class="p">,</span> <span class="n">dev_answers_csv</span><span class="p">)</span>
+<span class="n">test_data_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Test Data/subtaskC_test_data.csv"</span>
+<span class="n">test_answers_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Test Data/subtaskC_gold_answers.csv"</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">test_data_csv</span><span class="p">,</span> <span class="n">test_answers_csv</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">shrink_dataset</span><span class="p">:</span>
-    <span class="n">train_data</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-    <span class="n">dev_data</span> <span class="o">=</span> <span class="n">dev_data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-    <span class="n">test_data</span> <span class="o">=</span> <span class="n">test_data</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">train_data</span>
+    <span class="n">idxs</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">()[:</span><span class="mi">30</span><span class="p">]</span>
+    <span class="n">train_data</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="n">train_data</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">idxs</span><span class="p">)]</span>
+    <span class="n">idxs</span> <span class="o">=</span> <span class="n">dev_data</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">()[:</span><span class="mi">30</span><span class="p">]</span>
+    <span class="n">dev_data</span> <span class="o">=</span> <span class="n">dev_data</span><span class="p">[</span><span class="n">dev_data</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">idxs</span><span class="p">)]</span>
+    <span class="n">idxs</span> <span class="o">=</span> <span class="n">test_data</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">()[:</span><span class="mi">30</span><span class="p">]</span>
+    <span class="n">test_data</span> <span class="o">=</span> <span class="n">test_data</span><span class="p">[</span><span class="n">test_data</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">idxs</span><span class="p">)]</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s2">"display.max_colwidth"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Train DataFrame:"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">train_data</span><span class="p">[:</span><span class="mi">6</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Test DataFrame:"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">test_data</span><span class="p">[:</span><span class="mi">6</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -7887,9 +8173,16 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Train DataFrame:
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -7910,129 +8203,139 @@ Model config RobertaConfig {
 <th></th>
 <th>id</th>
 <th>FalseSent</th>
-<th>OptionA</th>
-<th>OptionB</th>
-<th>OptionC</th>
-<th>label</th>
+<th>reason</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<th>4122</th>
-<td>4122</td>
-<td>You are likely to find a computer in the bathroom</td>
-<td>The computer needs to take a shower in the bat...</td>
-<td>The computer may be broken in the bathroom</td>
-<td>The computer won't walk into the bathroom</td>
-<td>1</td>
+<th>2307</th>
+<td>769</td>
+<td>Computers is an ingredient used in preparing food</td>
+<td>Computers are not used for food and they are not edible</td>
 </tr>
 <tr>
-<th>4065</th>
-<td>4065</td>
-<td>Something you find in a stone is a blue flower</td>
-<td>Sometimes stones are heavier than flowers</td>
-<td>Sometimes stones are lighter than flowers</td>
-<td>Flowers cannot grow on stones</td>
-<td>2</td>
+<th>2308</th>
+<td>769</td>
+<td>Computers is an ingredient used in preparing food</td>
+<td>Computer is not something that can be used in preparing food.</td>
 </tr>
 <tr>
-<th>1731</th>
-<td>1731</td>
-<td>People use electricity to buy things</td>
-<td>It is impossible to buy things with electricity</td>
-<td>Electricity is essential to live</td>
-<td>Many appliances in home works on electricity</td>
-<td>0</td>
+<th>2309</th>
+<td>769</td>
+<td>Computers is an ingredient used in preparing food</td>
+<td>You cannot eat a computer</td>
 </tr>
 <tr>
-<th>4740</th>
-<td>4740</td>
-<td>There is a way to cure every kind of cancer now</td>
-<td>Cancer can kill people in a very short time</td>
-<td>There is not a way to cure every kind of cance...</td>
-<td>There is currently no vaccine to prevent peopl...</td>
-<td>1</td>
+<th>2664</th>
+<td>888</td>
+<td>he did hear music in his cooling glass</td>
+<td>cooling glass can not play the song, it's not a electronic thing to play music</td>
 </tr>
 <tr>
-<th>6391</th>
-<td>6392</td>
-<td>You can break the cement column</td>
-<td>Cement column is so hard</td>
-<td>Cement column is gray</td>
-<td>Cement column has many shapes</td>
-<td>0</td>
+<th>2665</th>
+<td>888</td>
+<td>he did hear music in his cooling glass</td>
+<td>Glass does not produce music.</td>
 </tr>
 <tr>
-<th>...</th>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-</tr>
-<tr>
-<th>6835</th>
-<td>6836</td>
-<td>Tall is a disease</td>
-<td>Tall is a normal physiological phenomenon</td>
-<td>Tall is determined by both environment and gene</td>
-<td>Tall is an external expression</td>
-<td>0</td>
-</tr>
-<tr>
-<th>5399</th>
-<td>5399</td>
-<td>Tara spread some gasoline on her bread</td>
-<td>the price of gasoline has been raised rapidly</td>
-<td>people have jam with bread</td>
-<td>people do not have bread with gasoline</td>
-<td>2</td>
-</tr>
-<tr>
-<th>6182</th>
-<td>6183</td>
-<td>he went to the school to deposit a sum of money</td>
-<td>students take money to their school to pay the...</td>
-<td>building a school costs a lot of money</td>
-<td>the school has no place to save money</td>
-<td>2</td>
-</tr>
-<tr>
-<th>7536</th>
-<td>7538</td>
-<td>You can only use chopsticks to eat noodles</td>
-<td>You can also use forks to eat noodles</td>
-<td>Many Chinese people use chopsticks to eat noodles</td>
-<td>There are different types of noodles in the world</td>
-<td>0</td>
-</tr>
-<tr>
-<th>6768</th>
-<td>6769</td>
-<td>Running is a disease</td>
-<td>Running is a form of exercise.</td>
-<td>Running is an aerobic exercise</td>
-<td>Running can be aerobic</td>
-<td>0</td>
+<th>2666</th>
+<td>888</td>
+<td>he did hear music in his cooling glass</td>
+<td>Any sound that might be made by a cooling glass is not music.</td>
 </tr>
 </tbody>
 </table>
-<p>100 rows × 6 columns</p>
 </div>
 </div>
 </div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Test DataFrame:
+</pre>
 </div>
 </div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>id</th>
+<th>FalseSent</th>
+<th>reason1</th>
+<th>reason2</th>
+<th>reason3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>76</th>
+<td>1280</td>
+<td>Beer that is drunk by humans is white</td>
+<td>Beer is made of barley and it is a yellow drink</td>
+<td>A beer that is drunk by humans is not white.</td>
+<td>Beer is brown</td>
+</tr>
+<tr>
+<th>101</th>
+<td>860</td>
+<td>eating trash food every day makes you stronger</td>
+<td>eating trash food every day makes your body fat and weak</td>
+<td>eating trash food every day is bad for your health</td>
+<td>Trash food could be contaminated</td>
+</tr>
+<tr>
+<th>136</th>
+<td>777</td>
+<td>he put some cooking oil in his wine</td>
+<td>cooking oil will destroy the taste of the wine</td>
+<td>Cooking oil does not go in wine</td>
+<td>Cooking oil does not taste nice and therefore would ruin the wine.</td>
+</tr>
+<tr>
+<th>174</th>
+<td>570</td>
+<td>Lobsters live in the mountains</td>
+<td>Lobsters needs water to live</td>
+<td>Lobsters live in the sea.</td>
+<td>Lobsters live in the sea, not the mountains</td>
+</tr>
+<tr>
+<th>210</th>
+<td>1929</td>
+<td>the clock shows animals</td>
+<td>the clock is used to show the time to people</td>
+<td>Clocks are required to tell the time, not show animals</td>
+<td>a clock shows the time not animals</td>
+</tr>
+<tr>
+<th>235</th>
+<td>1619</td>
+<td>she put the giraffe in the freezer</td>
+<td>A giraffe is much bigger than the freezer</td>
+<td>There is no way a giraffe is fitting in the freezer.</td>
+<td>A giraffe is too big to be put in a freezer.</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Notice that the <code>load_data</code> function translates the labels into their corresponding numerical index: <code>0</code>, <code>1</code> and <code>2</code>.</p>
-<p><a href="https://huggingface.co/docs/datasets/index">Datasets</a> is a library for dataset management that provides a set of tools to manipulate data in a easy and efficient way. Since it is fully integrated with <strong>Transformers</strong>, it is very convenient to use both libraries together. <strong>Datasets</strong> allows accessing and sharing datasets through the <a href="https://huggingface.co/datasets">Hugging Face Hub</a>. The core component of this library is the <a href="https://huggingface.co/docs/datasets/v2.10.0/en/package_reference/main_classes#datasets.Dataset">Dataset</a> class that implements an <a href="https://arrow.apache.org/docs/python/generated/pyarrow.Table.html">Apache Arrow table</a>. Similar to a <strong>pandas</strong> <code>DataFrame</code>, a <code>Dataset</code> object stores a table where each row corresponds to an example of the dataset and each column contains a different type of data. There are different ways to load the data into a <code>Dataset</code>, for example, from a <code>Dataframe</code>:</p>
 </div>
 </div>
 </div>
@@ -8041,13 +8344,16 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [146]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
 <span class="n">dev_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">dev_data</span><span class="p">)</span>
 <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
-<span class="n">train_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Train Dataset example:"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Test Dataset example:"</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -8057,16 +8363,38 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>{'id': 4122,
- 'FalseSent': 'You are likely to find a computer in the bathroom',
- 'OptionA': 'The computer needs to take a shower in the bathroom',
- 'OptionB': 'The computer may be broken in the bathroom',
- 'OptionC': "The computer won't walk into the bathroom",
- 'label': 1,
- '__index_level_0__': 4122}</pre>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Train Dataset example:
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>{'id': 769,
+ 'FalseSent': 'Computers is an ingredient used in preparing food',
+ 'reason': 'Computers are not used for food and they are not edible',
+ '__index_level_0__': 2307}</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Test Dataset example:
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>{'id': 1280,
+ 'FalseSent': 'Beer that is drunk by humans is white',
+ 'reason1': 'Beer is made of barley and it is a yellow drink',
+ 'reason2': 'A beer that is drunk by humans is not white.',
+ 'reason3': 'Beer is brown',
+ '__index_level_0__': 76}</pre>
 </div>
 </div>
 </div>
@@ -8078,31 +8406,18 @@ Model config RobertaConfig {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>One of the most powerful <strong>Datasets</strong> tools is the <a href="https://huggingface.co/docs/datasets/v2.10.0/en/nlp_process#map">map</a> function which allows pre-processing the dataset in batches. The function takes another callable as argument and applies it to every row in the <code>Dataset</code>. The goal of the next exercise is to implement a function to tokenize the statement pairs that will be used as a parameter of the <code>map</code> function.</p>
-<p>You must complete the code for the <code>preprocess_data</code> function. This function takes a batch of examples from a <code>Dataset</code>, the tokenizer returned by <code>load_model</code> and the <code>max_length</code> hyperparameter. The function should make three copies of each statement in the <code>FalseSent</code> field and pair them with each of the possible reasons in <code>OptionA</code>, <code>OptionB</code> and <code>OptionC</code>. Then, the statement-reason pairs must be tokenized jointly. The tokenizer must pad and truncate the sequences to the <code>max_length</code> value. You can use the <a href="https://huggingface.co/docs/transformers/v4.27.2/en/preprocessing">Preprocessing</a> and the <a href="https://huggingface.co/docs/transformers/v4.27.2/en/main_classes/tokenizer">Tokenizer</a> documentation as reference.</p>
-<p>The <code>tokenizer</code> should return a <a href="https://huggingface.co/docs/transformers/v4.27.2/en/main_classes/tokenizer#transformers.BatchEncoding">BatchEncoding</a> object with two fields for each data example:</p>
-<ul>
-<li><em>input_ids</em>: A list of token indices that will be used as the input of the model.</li>
-<li><em>attention_mask</em>: A list of indices masking out which tokens the model should not attend to.</li>
-</ul>
-<p>After running the tokenizer, <code>preprocess_data</code> should unflatten the <code>input_ids</code> and <code>attention_mask</code> corresponding to the same statement, i.e., for each example, the value of <code>input_ids</code>  should be a list of three lists of token indices and, similarly, the value of <code>attention_mask</code> should be a list of three lists of masking indices. The <strong>Transformers</strong> documentation provides a <a href="https://huggingface.co/docs/transformers/tasks/multiple_choice">guide for Multiple Choice</a> problems that you can use as reference.  The <code>preprocess_data</code> should return the output of the unflattening step.</p>
-<p>The <code>map</code> function takes the <code>input_ids</code> and <code>attention_mask</code> fields and inserts them into the <code>Dataset</code> as new two columns. For example, the result for the first row in the <code>Dataset</code> should look like:</p>
+<p>The <code>Datasets</code> should be pre-processed following two different approaches. For the test <code>Dataset</code>, you must run the tokenizer on the <code>FalseSent</code> column and store the result in the <code>input_ids</code> and <code>attention_mask</code> fields. For the train and development <code>Datasets</code> you must also run the tokenizer on the <code>reason</code> column and store the resulting <code>input_ids</code> in the <code>labels</code> field. In all cases, the tokenizer must pad and truncate the sequences to the <code>max_length</code> value.</p>
 <blockquote>
 <pre>
-{'id': 4122, 'FalseSent': 'You are likely to find a computer in the bathroom', 'OptionA': 'The computer needs to take a shower in the bathroom', 'OptionB': 'The computer may be broken in the bathroom', 'OptionC': "The computer won't walk into the bathroom", 'label': 1, '__index_level_0__': 4122, 'input_ids': [[0, 1185, 32, 533, 7, 465, 10, 3034, 11, 5, 8080, 2, 2, 133, 3034, 782, 7, 185, 10, 9310, 11, 5, 8080, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 1185, 32, 533, 7, 465, 10, 3034, 11, 5, 8080, 2, 2, 133, 3034, 189, 28, 3187, 11, 5, 8080, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 1185, 32, 533, 7, 465, 10, 3034, 11, 5, 8080, 2, 2, 133, 3034, 351, 75, 1656, 88, 5, 8080, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]], 'attention_mask': [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]}
+Train formated Dataset example:
+
+{'id': 769, 'FalseSent': 'Computers is an ingredient used in preparing food', 'reason': 'Computers are not used for food and they are not edible', '__index_level_0__': 769, 'input_ids': [0, 14721, 43990, 16, 41, 16181, 341, 11, 4568, 689, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 'attention_mask': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'labels': [0, 14721, 43990, 32, 45, 341, 13, 689, 8, 51, 32, 45, 27532, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}
+
+Test formated Dataset example:
+
+{'id': 1280, 'FalseSent': 'Beer that is drunk by humans is white', 'reason1': 'Beer is made of barley and it is a yellow drink', 'reason2': 'A beer that is drunk by humans is not white.', 'reason3': 'Beer is brown', '__index_level_0__': 76, 'input_ids': [0, 45562, 14, 16, 10789, 30, 5868, 16, 1104, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 'attention_mask': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
 </pre>
 </blockquote>
-<p>The <code>input_ids</code> field contains three lists, one for each statement-reason pair. Each value in each list of <code>input_ids</code> represents a sub-word of the <code>tokenizer</code> vocabulary. For the example above, <code>input_ids</code> corresponds to the following thee sequences of sub-words:</p>
-<blockquote>
-<pre>
-['&lt;s&gt;', 'You', 'Ġare', 'Ġlikely', 'Ġto', 'Ġfind', 'Ġa', 'Ġcomputer', 'Ġin', 'Ġthe', 'Ġbathroom', '&lt;/s&gt;', '&lt;/s&gt;', 'The', 'Ġcomputer', 'Ġneeds', 'Ġto', 'Ġtake', 'Ġa', 'Ġshower', 'Ġin', 'Ġthe', 'Ġbathroom', '&lt;/s&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;']
-
-['&lt;s&gt;', 'You', 'Ġare', 'Ġlikely', 'Ġto', 'Ġfind', 'Ġa', 'Ġcomputer', 'Ġin', 'Ġthe', 'Ġbathroom', '&lt;/s&gt;', '&lt;/s&gt;', 'The', 'Ġcomputer', 'Ġmay', 'Ġbe', 'Ġbroken', 'Ġin', 'Ġthe', 'Ġbathroom', '&lt;/s&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;']
-
-['&lt;s&gt;', 'You', 'Ġare', 'Ġlikely', 'Ġto', 'Ġfind', 'Ġa', 'Ġcomputer', 'Ġin', 'Ġthe', 'Ġbathroom', '&lt;/s&gt;', '&lt;/s&gt;', 'The', 'Ġcomputer', 'Ġwon', "'t", 'Ġwalk', 'Ġinto', 'Ġthe', 'Ġbathroom', '&lt;/s&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;']
-</pre>
-</blockquote>
-<p>Notice that the <strong>Hugging Face</strong> implementation of <strong>RoBERTa</strong>'s tokenizer uses the <code>&lt;s&gt;</code> token equivalently to <strong>BERT</strong>'s <code>[CLS]</code> token and the <code>&lt;/s&gt;</code> token to mark both the end and the separation of the sentences. The <code>Ġ</code> character indicates when there is a blank space before the token in the original text. This helps to know which tokens are the first sub-words of the words.</p>
 </div>
 </div>
 </div>
@@ -8111,35 +8426,34 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [147]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">preprocess_data</span><span class="p">(</span><span class="n">examples</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="p">):</span>   <span class="c1"># [1 Mark]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">preprocess_data</span><span class="p">(</span><span class="n">examples</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="p">,</span> <span class="n">is_test</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>   <span class="c1"># [1 Mark]</span>
     <span class="c1">#</span>
     <span class="c1">#  REPLACE THE pass STATEMENT WITH YOUR CODE</span>
     <span class="c1">#</span>
-
-    <span class="c1"># Making three copies of each statement in examples['FalseSent']</span>
-    <span class="n">first_sentences</span> <span class="o">=</span> <span class="p">[[</span><span class="n">context</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span> <span class="k">for</span> <span class="n">context</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">[</span><span class="s2">"FalseSent"</span><span class="p">]]</span>
-    <span class="c1"># Picking all options corresponding to the respective context</span>
-    <span class="n">second_sentences</span> <span class="o">=</span> <span class="p">[</span>
-        
-        <span class="p">[</span><span class="n">examples</span><span class="p">[</span><span class="s1">'OptionA'</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">examples</span><span class="p">[</span><span class="s1">'OptionB'</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">examples</span><span class="p">[</span><span class="s1">'OptionC'</span><span class="p">][</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">examples</span><span class="p">[</span><span class="s1">'FalseSent'</span><span class="p">]))</span>               
-                       
-    <span class="p">]</span>
-
-    <span class="c1"># Flattening both the lists</span>
-    <span class="n">first_sentences</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">first_sentences</span><span class="p">,</span> <span class="p">[])</span>
-    <span class="n">second_sentences</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">second_sentences</span><span class="p">,</span> <span class="p">[])</span>
-
-    <span class="c1"># Applying tokenizer</span>
-    <span class="n">tokenizer_output</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">first_sentences</span><span class="p">,</span> <span class="n">second_sentences</span><span class="p">,</span> 
-                                   <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">'max_length'</span><span class="p">,</span>
-                                   <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">'pt'</span>
-                                  <span class="p">)</span>
-    <span class="c1"># Unflattening and returning the output</span>
-    <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[</span><span class="n">values</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">tokenizer_output</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_test</span><span class="p">:</span> <span class="c1"># performing tokenization on training and development sets</span>
+        <span class="c1"># tokenizing FalseSent column</span>
+        <span class="n">tokenizer_output</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span>
+            <span class="n">examples</span><span class="p">[</span><span class="s1">'FalseSent'</span><span class="p">],</span><span class="n">padding</span><span class="o">=</span><span class="s1">'max_length'</span><span class="p">,</span>
+            <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span>
+            <span class="n">return_tensors</span><span class="o">=</span><span class="s1">'pt'</span>
+        <span class="p">)</span>
+        <span class="c1"># tokenizing reason column</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span>
+            <span class="n">examples</span><span class="p">[</span><span class="s1">'reason'</span><span class="p">],</span><span class="n">padding</span><span class="o">=</span><span class="s1">'max_length'</span><span class="p">,</span>
+            <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span>
+            <span class="n">return_tensors</span><span class="o">=</span><span class="s1">'pt'</span>
+        <span class="p">)</span>
+        <span class="n">tokenizer_output</span><span class="p">[</span><span class="s1">'labels'</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="s1">'input_ids'</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c1"># performing tokenization on test set</span>
+        <span class="n">tokenizer_output</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span>
+            <span class="n">examples</span><span class="p">[</span><span class="s1">'FalseSent'</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s1">'max_length'</span><span class="p">,</span>
+            <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span>
+            <span class="n">return_tensors</span><span class="o">=</span><span class="s1">'pt'</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">tokenizer_output</span>
     <span class="c1">#pass</span>
 </pre></div>
 </div>
@@ -8151,17 +8465,16 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [148]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="p">),</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">dev_dataset</span> <span class="o">=</span> <span class="n">dev_dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="p">),</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="p">),</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">test_dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Train formated Dataset example:</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">train_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"input_ids"</span><span class="p">]:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">convert_ids_to_tokens</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Test formated Dataset example:</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -8174,32 +8487,31 @@ Model config RobertaConfig {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Map:   0%|          | 0/100 [00:00&lt;?, ? examples/s]</pre>
+<pre>Map:   0%|          | 0/90 [00:00&lt;?, ? examples/s]</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Map:   0%|          | 0/100 [00:00&lt;?, ? examples/s]</pre>
+<pre>Map:   0%|          | 0/90 [00:00&lt;?, ? examples/s]</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Map:   0%|          | 0/100 [00:00&lt;?, ? examples/s]</pre>
+<pre>Map:   0%|          | 0/30 [00:00&lt;?, ? examples/s]</pre>
 </div>
 </div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>{'id': 4122, 'FalseSent': 'You are likely to find a computer in the bathroom', 'OptionA': 'The computer needs to take a shower in the bathroom', 'OptionB': 'The computer may be broken in the bathroom', 'OptionC': "The computer won't walk into the bathroom", 'label': 1, '__index_level_0__': 4122, 'input_ids': [[0, 1185, 32, 533, 7, 465, 10, 3034, 11, 5, 8080, 2, 2, 133, 3034, 782, 7, 185, 10, 9310, 11, 5, 8080, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 1185, 32, 533, 7, 465, 10, 3034, 11, 5, 8080, 2, 2, 133, 3034, 189, 28, 3187, 11, 5, 8080, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [0, 1185, 32, 533, 7, 465, 10, 3034, 11, 5, 8080, 2, 2, 133, 3034, 351, 75, 1656, 88, 5, 8080, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]], 'attention_mask': [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]}
+<pre>Train formated Dataset example:
 
-['&lt;s&gt;', 'You', 'Ġare', 'Ġlikely', 'Ġto', 'Ġfind', 'Ġa', 'Ġcomputer', 'Ġin', 'Ġthe', 'Ġbathroom', '&lt;/s&gt;', '&lt;/s&gt;', 'The', 'Ġcomputer', 'Ġneeds', 'Ġto', 'Ġtake', 'Ġa', 'Ġshower', 'Ġin', 'Ġthe', 'Ġbathroom', '&lt;/s&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;']
+{'id': 769, 'FalseSent': 'Computers is an ingredient used in preparing food', 'reason': 'Computers are not used for food and they are not edible', '__index_level_0__': 2307, 'input_ids': [0, 14721, 43990, 16, 41, 16181, 341, 11, 4568, 689, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 'attention_mask': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'labels': [0, 14721, 43990, 32, 45, 341, 13, 689, 8, 51, 32, 45, 27532, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]}
 
-['&lt;s&gt;', 'You', 'Ġare', 'Ġlikely', 'Ġto', 'Ġfind', 'Ġa', 'Ġcomputer', 'Ġin', 'Ġthe', 'Ġbathroom', '&lt;/s&gt;', '&lt;/s&gt;', 'The', 'Ġcomputer', 'Ġmay', 'Ġbe', 'Ġbroken', 'Ġin', 'Ġthe', 'Ġbathroom', '&lt;/s&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;']
+Test formated Dataset example:
 
-['&lt;s&gt;', 'You', 'Ġare', 'Ġlikely', 'Ġto', 'Ġfind', 'Ġa', 'Ġcomputer', 'Ġin', 'Ġthe', 'Ġbathroom', '&lt;/s&gt;', '&lt;/s&gt;', 'The', 'Ġcomputer', 'Ġwon', "'t", 'Ġwalk', 'Ġinto', 'Ġthe', 'Ġbathroom', '&lt;/s&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;', '&lt;pad&gt;']
-
+{'id': 1280, 'FalseSent': 'Beer that is drunk by humans is white', 'reason1': 'Beer is made of barley and it is a yellow drink', 'reason2': 'A beer that is drunk by humans is not white.', 'reason3': 'Beer is brown', '__index_level_0__': 76, 'input_ids': [0, 45562, 14, 16, 10789, 30, 5868, 16, 1104, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 'attention_mask': [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
 </pre>
 </div>
 </div>
@@ -8212,8 +8524,7 @@ Model config RobertaConfig {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Fine-tuning---%5B4-Marks%5D">Fine-tuning - [4 Marks]<a class="anchor-link" href="#Fine-tuning---%5B4-Marks%5D">¶</a></h2><p>Although it is possible to write customized training loops for the <strong>Transormers</strong> models using <strong>keras</strong> or <strong>pytorch</strong>, <strong>Transformers</strong> provides a <a href="https://huggingface.co/docs/transformers/v4.27.2/en/main_classes/trainer">Trainer</a> API that allows fine-tuning efficiently with a few simple steps. The training is highly customizable through with a wide range of options and hyperparameters that are handled by the <a href="https://huggingface.co/docs/transformers/v4.27.2/en/main_classes/trainer#transformers.TrainingArguments">TrainingArguments</a> class. Your next goal is to create both the <code>TrainingArguments</code> and <code>Trainer</code> objects that will be used to fine-tune <strong>RoBERTa</strong>. See the <a href="https://huggingface.co/docs/transformers/training">documentation</a> for an introduction on how to perform these steps.</p>
-<p>You must complete the code for the <code>create_training_arguments</code> function. This function takes as arguments the <code>epochs</code>, <code>train_batch_size</code> and <code>learning_rate</code> hyperparameters along with the <code>output_dir</code>. The function should use these arguments to create and return a <code>TrainingArguments</code> object. During the training, the model must be evaluated on the development test after every epoch. <code>TrainingArguments</code> should include this strategy.</p>
+<h2 id="Fine-tuning---%5B5-Marks%5D">Fine-tuning - [5 Marks]<a class="anchor-link" href="#Fine-tuning---%5B5-Marks%5D">¶</a></h2><p>In general, when using a <code>Trainer</code> to make predictions, it returns the logits for each class in the task. However, the <code>Seq2SeqTrainingArguments</code> class provides an option that allows the <code>Trainer</code> to generate sequences of tokens in the prediction. The <code>create_training_arguments</code> function must create the <code>Seq2SeqTrainingArguments</code> with that option and the hyperparamters passed as arguments. During the training, the model must be evaluated on the development set after every epoch. <code>TrainingArguments</code> should include this strategy.</p>
 <blockquote>
 <p><strong>Important!</strong> By default, <code>Trainer</code> saves a checkpoint of the model every 500 training steps. For this assignment, avoid this behavior by setting <code>save_strategy="no"</code> when creating the <code>TrainingArguments</code>.</p>
 </blockquote>
@@ -8225,17 +8536,18 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [149]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_training_arguments</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">):</span>   <span class="c1"># [1 Mark]</span>
     <span class="c1">#</span>
     <span class="c1">#  REPLACE THE pass STATEMENT WITH YOUR CODE</span>
     <span class="c1">#</span>
-    <span class="n">training_args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
+    <span class="n">training_args</span> <span class="o">=</span> <span class="n">Seq2SeqTrainingArguments</span><span class="p">(</span>
         <span class="n">num_train_epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="n">train_batch_size</span><span class="p">,</span>
         <span class="n">learning_rate</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
-        <span class="n">save_strategy</span><span class="o">=</span><span class="s1">'no'</span><span class="p">,</span> <span class="n">evaluation_strategy</span><span class="o">=</span><span class="s1">'epoch'</span>
+        <span class="n">evaluation_strategy</span><span class="o">=</span><span class="s2">"epoch"</span><span class="p">,</span> <span class="n">save_strategy</span><span class="o">=</span><span class="s2">"no"</span><span class="p">,</span>
+        <span class="n">predict_with_generate</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">training_args</span>
     <span class="c1">#pass</span>
@@ -8249,7 +8561,7 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [150]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">train_args</span> <span class="o">=</span> <span class="n">create_training_arguments</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span>
@@ -8279,8 +8591,7 @@ The default value for the training argument `--report_to` will change in v5 (fro
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Next, you will create a <code>Trainer</code> object with the training arguments. When the input format of a task has some special characteristic, the <code>Trainer</code> must be created with a data collator that can handle the batches of examples accordingly during the training. This is the case of Multiple Choice problems since the input of each example is a list of sequences. <strong>Transformers</strong> provides a set of <a href="https://huggingface.co/docs/transformers/main_classes/data_collator">DataCollator</a> objects for different tasks, but not for Multiple Choice. However, a <code>DataCollatorForMultipleChoice</code> is provided along with this notebook.</p>
-<p>You must complete the code for the <code>create_trainer</code> function. The function takes as input the model returned by <code>load_model</code>, the <code>TrainingArguments</code> created by <code>create_training_arguments</code> and the train and development <code>Datasets</code>. The function also takes the <code>tokenizer</code> returned by <code>load_model</code> that is required to initialize <code>DataCollatorForMultipleChoice</code>. The <code>create_trainer</code> function must create and return a <code>Trainer</code> object with the model, the training arguments and a <code>DataCollatorForMultipleChoice</code> object. The <code>Trainer</code> must be set up so that the train <code>Dataset</code> is used for training and the development <code>Dataset</code> is used to evaluate the model during the training.</p>
+<p>Next, you can create a <code>Trainer</code> object initializing the appropriate data collator.</p>
 </div>
 </div>
 </div>
@@ -8289,19 +8600,18 @@ The default value for the training argument `--report_to` will change in v5 (fro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [151]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_args</span><span class="p">,</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">dev_dataset</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">):</span>   <span class="c1"># [1 Mark]</span>
     <span class="c1">#</span>
     <span class="c1">#  REPLACE THE pass STATEMENT WITH YOUR CODE</span>
     <span class="c1">#</span>
-    <span class="n">trainer_object</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">Seq2SeqTrainer</span><span class="p">(</span>
         <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">train_args</span><span class="p">,</span>
         <span class="n">train_dataset</span><span class="o">=</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">eval_dataset</span><span class="o">=</span><span class="n">dev_dataset</span><span class="p">,</span>
-        <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">data_collator</span><span class="o">=</span><span class="n">DataCollatorForMultipleChoice</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
+        <span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span> <span class="n">data_collator</span><span class="o">=</span><span class="n">DataCollatorForSeq2Seq</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">)</span>
     <span class="p">)</span>
-    <span class="k">return</span> <span class="n">trainer_object</span>
     <span class="c1">#pass</span>
 </pre></div>
 </div>
@@ -8313,7 +8623,7 @@ The default value for the training argument `--report_to` will change in v5 (fro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [36]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [152]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">create_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_args</span><span class="p">,</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">dev_dataset</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">)</span>
@@ -8322,23 +8632,12 @@ The default value for the training argument `--report_to` will change in v5 (fro
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The <code>trainer</code> object created by <code>create_trainer</code> is ready to fine-tune the model by just running:</p>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [37]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [153]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
@@ -8354,17 +8653,17 @@ The default value for the training argument `--report_to` will change in v5 (fro
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>The following columns in the training set don't have a corresponding argument in `RobertaForMultipleChoice.forward` and have been ignored: FalseSent, id, __index_level_0__, OptionC, OptionB, OptionA. If FalseSent, id, __index_level_0__, OptionC, OptionB, OptionA are not expected by `RobertaForMultipleChoice.forward`,  you can safely ignore this message.
+<pre>The following columns in the training set don't have a corresponding argument in `BartForConditionalGeneration.forward` and have been ignored: FalseSent, id, __index_level_0__, reason. If FalseSent, id, __index_level_0__, reason are not expected by `BartForConditionalGeneration.forward`,  you can safely ignore this message.
 /Users/abhay/Desktop/college/uoa/applied_nlp/assignments/assignment_4/env/lib/python3.9/site-packages/transformers/optimization.py:306: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
   warnings.warn(
 ***** Running training *****
-  Num examples = 100
+  Num examples = 90
   Num Epochs = 3
   Instantaneous batch size per device = 8
   Total train batch size (w. parallel, distributed &amp; accumulation) = 8
   Gradient Accumulation steps = 1
-  Total optimization steps = 39
-You're using a RobertaTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
+  Total optimization steps = 36
+You're using a BartTokenizerFast tokenizer. Please note that with a fast tokenizer, using the `__call__` method is faster than using a method to encode the text followed by a call to the `pad` method to get a padded encoding.
 </pre>
 </div>
 </div>
@@ -8372,8 +8671,8 @@ You're using a RobertaTokenizerFast tokenizer. Please note that with a fast toke
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
 <div>
-<progress max="39" style="width:300px; height:20px; vertical-align: middle;" value="39"></progress>
-      [39/39 00:55, Epoch 3/3]
+<progress max="36" style="width:300px; height:20px; vertical-align: middle;" value="36"></progress>
+      [36/36 00:25, Epoch 3/3]
     </div>
 <table border="1" class="dataframe">
 <thead>
@@ -8387,17 +8686,17 @@ You're using a RobertaTokenizerFast tokenizer. Please note that with a fast toke
 <tr>
 <td>1</td>
 <td>No log</td>
-<td>1.097995</td>
+<td>9.144694</td>
 </tr>
 <tr>
 <td>2</td>
 <td>No log</td>
-<td>1.097187</td>
+<td>8.438861</td>
 </tr>
 <tr>
 <td>3</td>
 <td>No log</td>
-<td>1.096923</td>
+<td>8.244243</td>
 </tr>
 </tbody>
 </table><p>
@@ -8406,17 +8705,17 @@ You're using a RobertaTokenizerFast tokenizer. Please note that with a fast toke
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>The following columns in the evaluation set don't have a corresponding argument in `RobertaForMultipleChoice.forward` and have been ignored: FalseSent, id, __index_level_0__, OptionC, OptionB, OptionA. If FalseSent, id, __index_level_0__, OptionC, OptionB, OptionA are not expected by `RobertaForMultipleChoice.forward`,  you can safely ignore this message.
+<pre>The following columns in the evaluation set don't have a corresponding argument in `BartForConditionalGeneration.forward` and have been ignored: FalseSent, id, __index_level_0__, reason. If FalseSent, id, __index_level_0__, reason are not expected by `BartForConditionalGeneration.forward`,  you can safely ignore this message.
 ***** Running Evaluation *****
-  Num examples = 100
+  Num examples = 90
   Batch size = 8
-The following columns in the evaluation set don't have a corresponding argument in `RobertaForMultipleChoice.forward` and have been ignored: FalseSent, id, __index_level_0__, OptionC, OptionB, OptionA. If FalseSent, id, __index_level_0__, OptionC, OptionB, OptionA are not expected by `RobertaForMultipleChoice.forward`,  you can safely ignore this message.
+The following columns in the evaluation set don't have a corresponding argument in `BartForConditionalGeneration.forward` and have been ignored: FalseSent, id, __index_level_0__, reason. If FalseSent, id, __index_level_0__, reason are not expected by `BartForConditionalGeneration.forward`,  you can safely ignore this message.
 ***** Running Evaluation *****
-  Num examples = 100
+  Num examples = 90
   Batch size = 8
-The following columns in the evaluation set don't have a corresponding argument in `RobertaForMultipleChoice.forward` and have been ignored: FalseSent, id, __index_level_0__, OptionC, OptionB, OptionA. If FalseSent, id, __index_level_0__, OptionC, OptionB, OptionA are not expected by `RobertaForMultipleChoice.forward`,  you can safely ignore this message.
+The following columns in the evaluation set don't have a corresponding argument in `BartForConditionalGeneration.forward` and have been ignored: FalseSent, id, __index_level_0__, reason. If FalseSent, id, __index_level_0__, reason are not expected by `BartForConditionalGeneration.forward`,  you can safely ignore this message.
 ***** Running Evaluation *****
-  Num examples = 100
+  Num examples = 90
   Batch size = 8
 
 
@@ -8427,9 +8726,9 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[37]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[153]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>TrainOutput(global_step=39, training_loss=1.1002799792167468, metrics={'train_runtime': 56.5192, 'train_samples_per_second': 5.308, 'train_steps_per_second': 0.69, 'total_flos': 23124787470000.0, 'train_loss': 1.1002799792167468, 'epoch': 3.0})</pre>
+<pre>TrainOutput(global_step=36, training_loss=9.041217380099827, metrics={'train_runtime': 26.7325, 'train_samples_per_second': 10.1, 'train_steps_per_second': 1.347, 'total_flos': 4019258880000.0, 'train_loss': 9.041217380099827, 'epoch': 3.0})</pre>
 </div>
 </div>
 </div>
@@ -8441,8 +8740,76 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>After training, the model can be used to make predictions on unlabeled data using the <a href="https://huggingface.co/docs/transformers/v4.27.2/en/main_classes/trainer#transformers.Trainer.predict">predict</a> method of the <code>Trainer</code> class.</p>
-<p>You must complete the code for the <code>make_predictions</code> function. The function takes as input the <code>Trainer</code> object and test <code>Dataset</code>. The function must run the <code>predict</code> method on the input data. The <code>predict</code> method will return a <code>NamedTuple</code> including a <strong>numpy</strong> array with the predictions. For each statement in the input, the array contains a vector with the logits (the values used as input of the softmax) predicted for every label corresponding to a possible reason. The output of <code>make_predictions</code> must include only the index of the label with the highest logit value. For example, if the prediction for one statement is <code>[-0.856213458, 1.39899943, -0.703246286e]</code>, the output for that example should be <code>1</code>. For this, you can apply the <a href="https://numpy.org/doc/stable/reference/generated/numpy.argmax.html">argmax</a> method along the last axis of the <strong>numpy</strong> array.</p>
+<p>If you have set the <code>Seq2SeqTrainingArguments</code> properly, you could now use the <code>Trainer</code> to predict sequences of tokens. Take into account that <code>Trainer</code> will return the indexes of the tokens, so the sequence must be decoded to obtain the text strings. The <code>tokenizer</code> provides functionality to do this. The result of this process can be stored in the <code>prediction</code> column of the test <code>DataFrame</code>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:right"></th>
+<th style="text-align:right">id</th>
+<th style="text-align:left">FalseSent</th>
+<th style="text-align:left">reason1</th>
+<th style="text-align:left">reason2</th>
+<th style="text-align:left">reason3</th>
+<th style="text-align:left">prediction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">76</td>
+<td style="text-align:right">1280</td>
+<td style="text-align:left">Beer that is drunk by humans is white</td>
+<td style="text-align:left">Beer is made of barley and it is a yellow drink</td>
+<td style="text-align:left">A beer that is drunk by humans is not white.</td>
+<td style="text-align:left">Beer is brown</td>
+<td style="text-align:left">Beer that is drunk by humans is white</td>
+</tr>
+<tr>
+<td style="text-align:right">101</td>
+<td style="text-align:right">860</td>
+<td style="text-align:left">eating trash food every day makes you stronger</td>
+<td style="text-align:left">eating trash food every day makes your body fat and weak</td>
+<td style="text-align:left">eating trash food every day is bad for your health</td>
+<td style="text-align:left">Trash food could be contaminated</td>
+<td style="text-align:left">eating trash food every day makes you stronger</td>
+</tr>
+<tr>
+<td style="text-align:right">136</td>
+<td style="text-align:right">777</td>
+<td style="text-align:left">he put some cooking oil in his wine</td>
+<td style="text-align:left">cooking oil will destroy the taste of the wine</td>
+<td style="text-align:left">Cooking oil does not go in wine</td>
+<td style="text-align:left">Cooking oil does not taste nice and therefore would ruin the wine.</td>
+<td style="text-align:left">he put some cooking oil in his wine</td>
+</tr>
+<tr>
+<td style="text-align:right">174</td>
+<td style="text-align:right">570</td>
+<td style="text-align:left">Lobsters live in the mountains</td>
+<td style="text-align:left">Lobsters needs water to live</td>
+<td style="text-align:left">Lobsters live in the sea.</td>
+<td style="text-align:left">Lobsters live in the sea, not the mountains</td>
+<td style="text-align:left">Lobsters live in mountains</td>
+</tr>
+<tr>
+<td style="text-align:right">210</td>
+<td style="text-align:right">1929</td>
+<td style="text-align:left">the clock shows animals</td>
+<td style="text-align:left">the clock is used to show the time to people</td>
+<td style="text-align:left">Clocks are required to tell the time, not show animals</td>
+<td style="text-align:left">a clock shows the time not animals</td>
+<td style="text-align:left">the clock shows animals</td>
+</tr>
+<tr>
+<td style="text-align:right">235</td>
+<td style="text-align:right">1619</td>
+<td style="text-align:left">she put the giraffe in the freezer</td>
+<td style="text-align:left">A giraffe is much bigger than the freezer</td>
+<td style="text-align:left">There is no way a giraffe is fitting in the freezer.</td>
+<td style="text-align:left">A giraffe is too big to be put in a freezer.</td>
+<td style="text-align:left">she put the giraffe in the freezer</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -8451,19 +8818,18 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [38]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [154]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_predictions</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">):</span>   <span class="c1"># [2 Marks]</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_predictions</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">):</span>   <span class="c1"># [1 Mark]</span>
     <span class="c1">#</span>
     <span class="c1">#  REPLACE THE pass STATEMENT WITH YOUR CODE</span>
     <span class="c1">#</span>
     <span class="n">test_predictions</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_dataset</span><span class="o">=</span><span class="n">test_dataset</span><span class="p">)</span>
-    <span class="n">test_pred</span> <span class="o">=</span> <span class="n">test_predictions</span><span class="o">.</span><span class="n">predictions</span>
-    <span class="n">predicted_label</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">pred</span> <span class="ow">in</span> <span class="n">test_pred</span><span class="p">:</span>
-        <span class="n">predicted_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">argmax</span><span class="p">())</span>
-    <span class="k">return</span> <span class="n">predicted_label</span>
+    <span class="n">decoded_predictions</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">pred</span> <span class="ow">in</span> <span class="n">test_predictions</span><span class="o">.</span><span class="n">predictions</span><span class="p">:</span>
+        <span class="n">decoded_predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span><span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">decoded_predictions</span>
     <span class="c1">#pass</span>
 </pre></div>
 </div>
@@ -8475,10 +8841,10 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [39]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [155]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">make_predictions</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">make_predictions</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">)</span>
 <span class="n">test_data</span><span class="p">[</span><span class="s2">"prediction"</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions</span>
 <span class="n">test_data</span>
 </pre></div>
@@ -8493,9 +8859,9 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>The following columns in the test set don't have a corresponding argument in `RobertaForMultipleChoice.forward` and have been ignored: FalseSent, id, __index_level_0__, OptionC, OptionB, OptionA. If FalseSent, id, __index_level_0__, OptionC, OptionB, OptionA are not expected by `RobertaForMultipleChoice.forward`,  you can safely ignore this message.
+<pre>The following columns in the test set don't have a corresponding argument in `BartForConditionalGeneration.forward` and have been ignored: reason3, __index_level_0__, FalseSent, id, reason2, reason1. If reason3, __index_level_0__, FalseSent, id, reason2, reason1 are not expected by `BartForConditionalGeneration.forward`,  you can safely ignore this message.
 ***** Running Prediction *****
-  Num examples = 100
+  Num examples = 30
   Batch size = 8
 </pre>
 </div>
@@ -8506,7 +8872,7 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[39]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[155]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8528,127 +8894,285 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 <th></th>
 <th>id</th>
 <th>FalseSent</th>
-<th>OptionA</th>
-<th>OptionB</th>
-<th>OptionC</th>
-<th>label</th>
+<th>reason1</th>
+<th>reason2</th>
+<th>reason3</th>
 <th>prediction</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<th>521</th>
-<td>324</td>
-<td>She put the filing cabinet into the papers.</td>
-<td>Papers are fragile than the filing cabinet.</td>
-<td>Nothing can be put into the paper.</td>
-<td>Filing cabinets are usually gray while papers ...</td>
-<td>1</td>
-<td>0</td>
+<th>76</th>
+<td>1280</td>
+<td>Beer that is drunk by humans is white</td>
+<td>Beer is made of barley and it is a yellow drink</td>
+<td>A beer that is drunk by humans is not white.</td>
+<td>Beer is brown</td>
+<td>Beer that is drunk by humans is white</td>
 </tr>
 <tr>
-<th>737</th>
-<td>1455</td>
-<td>The lion used the litter box</td>
-<td>A lion is normally found in the wild</td>
-<td>A lion cannot eat a cat</td>
-<td>A domestic cat is tame and use litter boxes</td>
-<td>2</td>
-<td>0</td>
+<th>101</th>
+<td>860</td>
+<td>eating trash food every day makes you stronger</td>
+<td>eating trash food every day makes your body fat and weak</td>
+<td>eating trash food every day is bad for your health</td>
+<td>Trash food could be contaminated</td>
+<td>eating trash food every day makes you stronger</td>
 </tr>
 <tr>
-<th>740</th>
-<td>13</td>
-<td>Cigarette is good for healthy</td>
-<td>Cigarette contains lots of nicotines</td>
-<td>Lung will be damaged by smoking cigarette</td>
-<td>Cigarettes always have a high tax</td>
-<td>1</td>
-<td>0</td>
+<th>136</th>
+<td>777</td>
+<td>he put some cooking oil in his wine</td>
+<td>cooking oil will destroy the taste of the wine</td>
+<td>Cooking oil does not go in wine</td>
+<td>Cooking oil does not taste nice and therefore would ruin the wine.</td>
+<td>he put some cooking oil in his wine</td>
 </tr>
 <tr>
-<th>660</th>
-<td>207</td>
-<td>Pens are for painting</td>
-<td>Pens are too small</td>
-<td>Pens are a writing utensil</td>
-<td>pens would make a mess</td>
-<td>1</td>
-<td>1</td>
+<th>174</th>
+<td>570</td>
+<td>Lobsters live in the mountains</td>
+<td>Lobsters needs water to live</td>
+<td>Lobsters live in the sea.</td>
+<td>Lobsters live in the sea, not the mountains</td>
+<td>Lobsters live in the mountains</td>
+</tr>
+<tr>
+<th>210</th>
+<td>1929</td>
+<td>the clock shows animals</td>
+<td>the clock is used to show the time to people</td>
+<td>Clocks are required to tell the time, not show animals</td>
+<td>a clock shows the time not animals</td>
+<td>the clock shows animals</td>
+</tr>
+<tr>
+<th>235</th>
+<td>1619</td>
+<td>she put the giraffe in the freezer</td>
+<td>A giraffe is much bigger than the freezer</td>
+<td>There is no way a giraffe is fitting in the freezer.</td>
+<td>A giraffe is too big to be put in a freezer.</td>
+<td>she put the giraffe in the freezer</td>
+</tr>
+<tr>
+<th>280</th>
+<td>979</td>
+<td>he installed the carpet on the lake</td>
+<td>The carpet will absorb water and sink</td>
+<td>Carpets need a subfloor.</td>
+<td>A lake would not be able to grip onto carpet.</td>
+<td>he installed the carpet on the lake</td>
+</tr>
+<tr>
+<th>319</th>
+<td>75</td>
+<td>My son had us write an essay on The National Monument.</td>
+<td>My son isn't smart enough to assign an essay.</td>
+<td>My son is studying in the seconds standard only</td>
+<td>Children don't ask parents to write essays.</td>
+<td>My son had us write an essay on The National Monument.</td>
+</tr>
+<tr>
+<th>371</th>
+<td>1810</td>
+<td>He drove up the stairs to the bedroom</td>
+<td>A car is too large to fit upstairs</td>
+<td>Stairs are too small and weak for a car to drive up</td>
+<td>People don't drive up indoor stairs.</td>
+<td>He drove up the stairs to the bedroom</td>
 </tr>
 <tr>
 <th>411</th>
 <td>774</td>
 <td>he put a piece of plastic on the bread</td>
-<td>I don't like sliced bread in plastic bags</td>
 <td>the plastic usually is toxic</td>
-<td>some plastic is biodegradable</td>
-<td>1</td>
-<td>0</td>
+<td>You can't eat plastic.</td>
+<td>People do not eat plastic because it's not a food</td>
+<td>he put a piece of plastic on the bread</td>
 </tr>
 <tr>
-<th>...</th>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
-<td>...</td>
+<th>513</th>
+<td>1739</td>
+<td>My mom always cuts my fish's hair.</td>
+<td>Fish don't have any hair.</td>
+<td>Fish have scales instead of hair like we have</td>
+<td>Fish don't have hair.</td>
+<td>My mom always cuts my fish's hair.</td>
 </tr>
 <tr>
-<th>436</th>
-<td>225</td>
-<td>Carol turned on the potato</td>
-<td>Carol eats the potato</td>
-<td>A potato can't be turned on</td>
-<td>potatoes can be used to make electricity</td>
-<td>1</td>
-<td>1</td>
+<th>521</th>
+<td>324</td>
+<td>She put the filing cabinet into the papers.</td>
+<td>Nothing can be put into the paper.</td>
+<td>it doesnt fit into papers</td>
+<td>The filing cabinet is what papers go into.</td>
+<td>She put the filing cabinet into the papers.</td>
 </tr>
 <tr>
-<th>764</th>
-<td>1663</td>
-<td>i use my dog to play cricket</td>
-<td>Dog is not interested in the cricket ball</td>
-<td>the dog is so brisk</td>
-<td>No one can play the cricket ball by their's dog</td>
-<td>2</td>
-<td>0</td>
+<th>527</th>
+<td>6</td>
+<td>Grizzly bears hate honey.</td>
+<td>Honey is good for grizzly bear's growth</td>
+<td>Grizzly bears have been observed in the wild seeking out honey to eat</td>
+<td>Grizzly bears love honey.</td>
+<td>Grizzly bears hate honey.</td>
 </tr>
 <tr>
-<th>88</th>
-<td>82</td>
-<td>Dolphins are fish.</td>
-<td>Dolphins are warm-blooded and breathe air, whi...</td>
-<td>Dolphins have fins.</td>
-<td>Dolphins live in the ocean.</td>
-<td>0</td>
-<td>0</td>
+<th>549</th>
+<td>901</td>
+<td>the baby held a grizzly bear</td>
+<td>a baby would be eaten by a grizzly bear</td>
+<td>Baby can hold a teddy bear but not grizzly bear.</td>
+<td>A grizzly bear is bigger than a baby and would eat a baby.</td>
+<td>the baby held a grizzly</td>
 </tr>
 <tr>
-<th>63</th>
-<td>800</td>
-<td>the family adopted a dinosaur to be their new pet</td>
-<td>the dinosaurs died out long ago</td>
-<td>many different animals can make good pets</td>
-<td>some dinosaurs are carnivorous animals</td>
-<td>0</td>
-<td>0</td>
+<th>626</th>
+<td>343</td>
+<td>She throws a stove in the hat.</td>
+<td>A stove is bigger than a hat.</td>
+<td>stove is too big to fit in a hat</td>
+<td>Stove cannot be thrown in the hat</td>
+<td>She throws a stove in the hat.</td>
 </tr>
 <tr>
-<th>826</th>
-<td>948</td>
-<td>he learned with his refrigerator before the exam</td>
-<td>refrigerators are usually big while the exam i...</td>
-<td>refrigerator doesn't have any information for ...</td>
-<td>his mate hide his textbooks in the refrigerato...</td>
-<td>1</td>
-<td>1</td>
+<th>636</th>
+<td>1044</td>
+<td>fishing nets are useful for covering a window</td>
+<td>fishing nets have holes in them that leave gaps of a window uncovered</td>
+<td>Fishing net will smell so bad and look so unclean on a window.</td>
+<td>Nets don't block out light.</td>
+<td>fishing nets are useful for covering a window</td>
+</tr>
+<tr>
+<th>660</th>
+<td>207</td>
+<td>Pens are for painting</td>
+<td>Pens are a writing utensil</td>
+<td>Pens are not brushes.</td>
+<td>A pen is not made for painting.</td>
+<td>Pens are for painting</td>
+</tr>
+<tr>
+<th>678</th>
+<td>443</td>
+<td>My window speaks very well.</td>
+<td>Your window cannot speak because it is an object.</td>
+<td>windows dont talk</td>
+<td>a window does not have a voice</td>
+<td>My window speaks very well.</td>
+</tr>
+<tr>
+<th>737</th>
+<td>1455</td>
+<td>The lion used the litter box</td>
+<td>A domestic cat is tame and use litter boxes</td>
+<td>The lion is too big for a litter box</td>
+<td>litter boxes are only for cats</td>
+<td>The lion used the litter box</td>
+</tr>
+<tr>
+<th>740</th>
+<td>13</td>
+<td>Cigarette is good for healthy</td>
+<td>Lung will be damaged by smoking cigarette</td>
+<td>Cigarettes contain carcinogens.</td>
+<td>Cigarettes cause cancer.</td>
+<td>Cigarette is good for healthy</td>
+</tr>
+<tr>
+<th>761</th>
+<td>308</td>
+<td>Mike ran four sandwiches.</td>
+<td>You can't run a sandwich.</td>
+<td>A sandwich is not a distance</td>
+<td>Sandwich is food and not need to run for it.</td>
+<td>Mike ran four sandwiches.</td>
+</tr>
+<tr>
+<th>811</th>
+<td>1439</td>
+<td>The cat likes to watch alligators.</td>
+<td>Cats and alligators lives in different areas in the world</td>
+<td>Cats like to watch things they can eat.</td>
+<td>The cat likes to watch birds and not alligators.</td>
+<td>The cat likes to watch alligators.</td>
+</tr>
+<tr>
+<th>859</th>
+<td>1696</td>
+<td>The supermarket only sells cars</td>
+<td>They have a variety of goods and services in the supermarket, mainly household supplies</td>
+<td>A supermarket implies the sale of smaller goods like groceries or toiletries.</td>
+<td>Supermarkets don't sell cars.</td>
+<td>The supermarket only sells cars</td>
+</tr>
+<tr>
+<th>883</th>
+<td>1548</td>
+<td>The man ate the bowl when he was hungry.</td>
+<td>People cannot eat bowls.</td>
+<td>The bowl is not edible.</td>
+<td>One cannot eat a bowl</td>
+<td>The man ate the bowl when he was hungry.</td>
+</tr>
+<tr>
+<th>899</th>
+<td>863</td>
+<td>a flower petal is part of a motor vehicle</td>
+<td>a flower petal isn't a motor component</td>
+<td>A motor vehicle does not contain flower parts</td>
+<td>Petals aren't car parts.</td>
+<td>a flower petal is part of a motor vehicle</td>
+</tr>
+<tr>
+<th>902</th>
+<td>745</td>
+<td>Renting movies is the newest trend</td>
+<td>Fewer and fewer people like renting movies</td>
+<td>Renting has been around a long time.</td>
+<td>Renting movies is outdated and for something to be trending it must be popular</td>
+<td>Renting movies is the newest trend</td>
+</tr>
+<tr>
+<th>938</th>
+<td>1883</td>
+<td>People are usually green</td>
+<td>No one is born green</td>
+<td>People are not green.</td>
+<td>No existing human race has green skin.</td>
+<td>People are usually green</td>
+</tr>
+<tr>
+<th>947</th>
+<td>1030</td>
+<td>beepers are becoming even more popular</td>
+<td>no one uses beepers anymore</td>
+<td>The beeper trend died in the 90s.</td>
+<td>Beepers have gone out of style with all of the new available cell phones, so they are rarely used anymore.</td>
+<td>beepers are becoming even more popular</td>
+</tr>
+<tr>
+<th>973</th>
+<td>986</td>
+<td>the sun rises in the west</td>
+<td>the sun rises in the east and sets in the west</td>
+<td>It depends on the earth position</td>
+<td>The sun always sets in the west</td>
+<td>the sun rises in the west</td>
+</tr>
+<tr>
+<th>986</th>
+<td>905</td>
+<td>at night it's easy to find sun</td>
+<td>sun can be seen only during the day</td>
+<td>By definition night is after the sun has gone</td>
+<td>The sun is not out at night</td>
+<td>at night it's easy to find sun</td>
 </tr>
 </tbody>
 </table>
-<p>100 rows × 7 columns</p>
 </div>
 </div>
 </div>
@@ -8661,7 +9185,27 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The <strong>Subtasks B</strong> of <strong>ComVE</strong> is evaluated using accuracy. The <a href="https://huggingface.co/docs/evaluate/index">evaluate</a> library provides support to apply this and other metrics. The <code>evaluate_prediction</code> function takes the test <code>DataFrame</code> and calculates the accuracy comparing the <code>prediction</code> and <code>label</code> columns. With <code>shrink_dataset</code> and <code>base_model</code> set to <code>True</code> the model is not able to learn the task so the expected score is only <em>0.51</em>. With a full training run, i.e. with <code>shrink_dataset</code> and <code>base_model</code> set to <code>False</code>, the score should be around <em>0.928</em>.</p>
+<p>The <strong>Subtasks B</strong> of <strong>ComVE</strong> is evaluated using the <em>bleu</em> metric. In this assignment, you will also evaluate using <em>rouge</em>. With <code>shrink_dataset</code> and <code>base_model</code> set to <code>True</code>, the expected scores are <em>0.216</em> and <em>0.446</em> for <em>bleu</em> and <em>rouge</em> respectively. With a full training run, i.e. with <code>shrink_dataset</code> and <code>base_model</code> set to <code>False</code>, the scores should be around <em>0.228</em> and <em>0.461</em>.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [156]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">evaluate_prediction</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="n">metric</span><span class="p">):</span>   <span class="c1"># [2 Marks]</span>
+    <span class="c1">#</span>
+    <span class="c1">#  REPLACE THE pass STATEMENT WITH YOUR CODE</span>
+    <span class="c1">#</span>
+    <span class="n">metric</span> <span class="o">=</span> <span class="n">evaluate</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">metric</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">metric</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">predictions</span><span class="o">=</span><span class="n">test_data</span><span class="p">[</span><span class="s2">"prediction"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">references</span><span class="o">=</span><span class="n">test_data</span><span class="p">[[</span><span class="s2">"reason1"</span><span class="p">,</span><span class="s2">"reason2"</span><span class="p">,</span><span class="s2">"reason3"</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="c1">#pass</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -8670,13 +9214,10 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [40]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [157]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">evaluate_prediction</span><span class="p">(</span><span class="n">test_data</span><span class="p">):</span>
-    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">evaluate</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"accuracy"</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">accuracy</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">predictions</span><span class="o">=</span><span class="n">test_data</span><span class="p">[</span><span class="s2">"prediction"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">references</span><span class="o">=</span><span class="n">test_data</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-<span class="n">evaluate_prediction</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span> <span class="n">evaluate_prediction</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="s2">"bleu"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8687,10 +9228,102 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[40]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[157]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>{'accuracy': 0.52}</pre>
+<pre>{'bleu': 0.2227191183117467,
+ 'precisions': [0.5756097560975609,
+  0.30857142857142855,
+  0.14482758620689656,
+  0.09565217391304348],
+ 'brevity_penalty': 1.0,
+ 'length_ratio': 1.1714285714285715,
+ 'translation_length': 205,
+ 'reference_length': 175}</pre>
 </div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [158]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">evaluate_prediction</span><span class="p">(</span><span class="n">test_data</span><span class="p">,</span> <span class="s2">"rouge"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[158]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>{'rouge1': 0.46834646362123145,
+ 'rouge2': 0.25512620792806556,
+ 'rougeL': 0.44678596257543635,
+ 'rougeLsum': 0.44765685524199467}</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>The scores for the partial training and the full training are so similar that it would appear that the full training does not provide any benefit in this task. However, it should be noted that the test sets in the two cases are different. More importantly, these results are indicative of the limitations of metrics such as <em>bleu</em> and <em>rouge</em> for evaluating text generation. Take, for example, the following case from the test set:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">FalseSent</th>
+<th style="text-align:left">reason1</th>
+<th style="text-align:left">reason2</th>
+<th style="text-align:left">reason3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Beer that is drunk by humans is white</td>
+<td style="text-align:left">Beer is made of barley and it is a yellow drink</td>
+<td style="text-align:left">A beer that is drunk by humans is not white.</td>
+<td style="text-align:left">Beer is brown</td>
+</tr>
+</tbody>
+</table>
+<p>The predictions obtained by the partial and full trainings and their corresponding scores are the following:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">full training</th>
+<th style="text-align:left">prediction</th>
+<th style="text-align:right">bleu</th>
+<th style="text-align:right">rouge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">no</td>
+<td style="text-align:left">Beer that is drunk by humans is white</td>
+<td style="text-align:right">0.731</td>
+<td style="text-align:right">0.889</td>
+</tr>
+<tr>
+<td style="text-align:left">yes</td>
+<td style="text-align:left">White beer is not suitable for human consumption.</td>
+<td style="text-align:right">0.000</td>
+<td style="text-align:right">0.364</td>
+</tr>
+</tbody>
+</table>
+<p>The text generated by the full training is a better explanation than the reason generated by the partial training, which is a mere repetition of the nonsensical statement. However, the latter obtains much better scores than the former. Metrics such as <em>bleu</em> and <em>rouge</em> do not always replace accurately the human judgement.</p>
 </div>
 </div>
 </div>

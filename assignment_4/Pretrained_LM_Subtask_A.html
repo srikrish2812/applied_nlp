@@ -7534,7 +7534,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [148]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">shrink_dataset</span> <span class="o">=</span> <span class="kc">True</span>
@@ -7562,7 +7562,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [149]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">colab</span><span class="p">:</span>
@@ -7591,7 +7591,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [150]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -7621,7 +7621,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [151]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">enable_full_determinism</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
@@ -7649,7 +7649,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [152]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># Number of epochs to train the model</span>
@@ -7679,7 +7679,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [153]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">):</span>   <span class="c1"># [1 Mark]</span>
@@ -7700,7 +7700,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [154]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">model_name</span> <span class="o">=</span> <span class="s2">"roberta-base"</span> <span class="k">if</span> <span class="n">base_model</span> <span class="k">else</span> <span class="s2">"roberta-large"</span>
@@ -7748,10 +7748,10 @@ Model config RobertaConfig {
 }
 
 loading weights file pytorch_model.bin from cache at /Users/abhay/.cache/huggingface/hub/models--roberta-base/snapshots/e2da8e2f811d1448a5b465c236feacd80ffbac7b/pytorch_model.bin
-Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['lm_head.layer_norm.weight', 'roberta.pooler.dense.weight', 'lm_head.dense.bias', 'lm_head.layer_norm.bias', 'roberta.pooler.dense.bias', 'lm_head.decoder.weight', 'lm_head.dense.weight', 'lm_head.bias']
+Some weights of the model checkpoint at roberta-base were not used when initializing RobertaForSequenceClassification: ['roberta.pooler.dense.bias', 'lm_head.dense.bias', 'roberta.pooler.dense.weight', 'lm_head.bias', 'lm_head.layer_norm.bias', 'lm_head.layer_norm.weight', 'lm_head.dense.weight', 'lm_head.decoder.weight']
 - This IS expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
 - This IS NOT expected if you are initializing RobertaForSequenceClassification from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
-Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.out_proj.bias', 'classifier.dense.weight', 'classifier.out_proj.weight']
+Some weights of RobertaForSequenceClassification were not initialized from the model checkpoint at roberta-base and are newly initialized: ['classifier.dense.bias', 'classifier.out_proj.weight', 'classifier.out_proj.bias', 'classifier.dense.weight']
 You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
 loading configuration file config.json from cache at /Users/abhay/.cache/huggingface/hub/models--roberta-base/snapshots/e2da8e2f811d1448a5b465c236feacd80ffbac7b/config.json
 Model config RobertaConfig {
@@ -7836,7 +7836,7 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [155]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">data_csv</span><span class="p">,</span> <span class="n">answers_csv</span><span class="p">):</span>
@@ -7853,7 +7853,7 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [156]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">train_data_csv</span> <span class="o">=</span> <span class="s2">"SemEval2020-Task4-Data/ALL data/Training  Data/subtaskA_data_all.csv"</span>
@@ -7880,7 +7880,7 @@ Model config RobertaConfig {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[156]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8008,7 +8008,7 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [157]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
@@ -8025,7 +8025,7 @@ Model config RobertaConfig {
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[157]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>{'id': 6252,
  'sent0': 'a duck walks on three legs',
@@ -8071,7 +8071,7 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [158]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">preprocess_data</span><span class="p">(</span><span class="n">examples</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="p">):</span>   <span class="c1"># [1 Mark]</span>
@@ -8095,7 +8095,7 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [159]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">preprocess_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">max_length</span><span class="p">),</span> <span class="n">batched</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -8160,7 +8160,7 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [160]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_training_arguments</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">):</span>    <span class="c1"># [1 Mark]</span>
@@ -8184,7 +8184,7 @@ Model config RobertaConfig {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [161]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">train_args</span> <span class="o">=</span> <span class="n">create_training_arguments</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span>
@@ -8224,7 +8224,7 @@ The default value for the training argument `--report_to` will change in v5 (fro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [162]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [35]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_args</span><span class="p">,</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">dev_dataset</span><span class="p">):</span>    <span class="c1"># [1 Mark]</span>
@@ -8247,7 +8247,7 @@ The default value for the training argument `--report_to` will change in v5 (fro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [163]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [36]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">create_trainer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_args</span><span class="p">,</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">dev_dataset</span><span class="p">)</span>
@@ -8272,7 +8272,7 @@ The default value for the training argument `--report_to` will change in v5 (fro
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [164]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [37]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
@@ -8288,7 +8288,7 @@ The default value for the training argument `--report_to` will change in v5 (fro
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>The following columns in the training set don't have a corresponding argument in `RobertaForSequenceClassification.forward` and have been ignored: sent1, id, __index_level_0__, sent0. If sent1, id, __index_level_0__, sent0 are not expected by `RobertaForSequenceClassification.forward`,  you can safely ignore this message.
+<pre>The following columns in the training set don't have a corresponding argument in `RobertaForSequenceClassification.forward` and have been ignored: sent1, sent0, id, __index_level_0__. If sent1, sent0, id, __index_level_0__ are not expected by `RobertaForSequenceClassification.forward`,  you can safely ignore this message.
 /Users/abhay/Desktop/college/uoa/applied_nlp/assignments/assignment_4/env/lib/python3.9/site-packages/transformers/optimization.py:306: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
   warnings.warn(
 ***** Running training *****
@@ -8339,15 +8339,15 @@ The default value for the training argument `--report_to` will change in v5 (fro
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>The following columns in the evaluation set don't have a corresponding argument in `RobertaForSequenceClassification.forward` and have been ignored: sent1, id, __index_level_0__, sent0. If sent1, id, __index_level_0__, sent0 are not expected by `RobertaForSequenceClassification.forward`,  you can safely ignore this message.
+<pre>The following columns in the evaluation set don't have a corresponding argument in `RobertaForSequenceClassification.forward` and have been ignored: sent1, sent0, id, __index_level_0__. If sent1, sent0, id, __index_level_0__ are not expected by `RobertaForSequenceClassification.forward`,  you can safely ignore this message.
 ***** Running Evaluation *****
   Num examples = 100
   Batch size = 8
-The following columns in the evaluation set don't have a corresponding argument in `RobertaForSequenceClassification.forward` and have been ignored: sent1, id, __index_level_0__, sent0. If sent1, id, __index_level_0__, sent0 are not expected by `RobertaForSequenceClassification.forward`,  you can safely ignore this message.
+The following columns in the evaluation set don't have a corresponding argument in `RobertaForSequenceClassification.forward` and have been ignored: sent1, sent0, id, __index_level_0__. If sent1, sent0, id, __index_level_0__ are not expected by `RobertaForSequenceClassification.forward`,  you can safely ignore this message.
 ***** Running Evaluation *****
   Num examples = 100
   Batch size = 8
-The following columns in the evaluation set don't have a corresponding argument in `RobertaForSequenceClassification.forward` and have been ignored: sent1, id, __index_level_0__, sent0. If sent1, id, __index_level_0__, sent0 are not expected by `RobertaForSequenceClassification.forward`,  you can safely ignore this message.
+The following columns in the evaluation set don't have a corresponding argument in `RobertaForSequenceClassification.forward` and have been ignored: sent1, sent0, id, __index_level_0__. If sent1, sent0, id, __index_level_0__ are not expected by `RobertaForSequenceClassification.forward`,  you can safely ignore this message.
 ***** Running Evaluation *****
   Num examples = 100
   Batch size = 8
@@ -8360,9 +8360,9 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[164]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[37]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>TrainOutput(global_step=39, training_loss=0.6895800370436448, metrics={'train_runtime': 25.7951, 'train_samples_per_second': 11.63, 'train_steps_per_second': 1.512, 'total_flos': 7708331700000.0, 'train_loss': 0.6895800370436448, 'epoch': 3.0})</pre>
+<pre>TrainOutput(global_step=39, training_loss=0.6895800370436448, metrics={'train_runtime': 26.0787, 'train_samples_per_second': 11.504, 'train_steps_per_second': 1.495, 'total_flos': 7708331700000.0, 'train_loss': 0.6895800370436448, 'epoch': 3.0})</pre>
 </div>
 </div>
 </div>
@@ -8384,7 +8384,7 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [165]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [38]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_predictions</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">):</span>    <span class="c1"># [2 Marks]</span>
@@ -8408,7 +8408,7 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [166]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [39]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">make_predictions</span><span class="p">(</span><span class="n">trainer</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">)</span>
@@ -8426,7 +8426,7 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>The following columns in the test set don't have a corresponding argument in `RobertaForSequenceClassification.forward` and have been ignored: sent1, id, __index_level_0__, sent0. If sent1, id, __index_level_0__, sent0 are not expected by `RobertaForSequenceClassification.forward`,  you can safely ignore this message.
+<pre>The following columns in the test set don't have a corresponding argument in `RobertaForSequenceClassification.forward` and have been ignored: sent1, sent0, id, __index_level_0__. If sent1, sent0, id, __index_level_0__ are not expected by `RobertaForSequenceClassification.forward`,  you can safely ignore this message.
 ***** Running Prediction *****
   Num examples = 100
   Batch size = 8
@@ -8439,7 +8439,7 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[166]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[39]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8579,7 +8579,7 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [167]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [40]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">evaluate_prediction</span><span class="p">(</span><span class="n">test_data</span><span class="p">):</span>
@@ -8596,7 +8596,7 @@ Training completed. Do not forget to share your model on huggingface.co/models =
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[167]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[40]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>{'accuracy': 0.49}</pre>
 </div>
